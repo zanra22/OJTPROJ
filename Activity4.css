@@ -1,0 +1,18 @@
+.div1 button {
+	font-family: 'Permanent Marker', cursive;
+	border-radius: 20px;
+	background-color: #00FFFF;
+	font-size: 20px;
+	width: 100%;
+}
+
+body {
+	/*background-color: #483D8B;*/
+}
+
+.text {
+	text-align: center;
+	font-size: 50px;
+	border: 10px solid #00FFFF ;
+	margin: 30px;
+}
