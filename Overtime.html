@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, td {
+    border: 1px solid black;
+}
+
+.th{
+  margin-left: 100px;
+}
+</style>
+</head>
+<body>
+
+<p>Click the button to add a new row at the first position of the table and then add cells and content.</p>
+<form style="display: block;" align="center">
+<table class="table table-bordered" align="center" style="margin-bottom: 10px">
+  <thead>
+    <tr>
+      <th></th>
+      <th style="display: block">Date</th>
+      <th colspan="2">Regular Shift</th>
+      <th colspan="2">Overtime</th>
+      <th>Total Hours</th>
+    </tr>
+  </thead>
+  <tbody id="dataTable">
+    <tr>
+      <td colspan="0"><input type="checkbox" name="chk"></input></td>
+      <td><input type="date" placeholder="yyyy-mm-dd" required pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])/(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])/(?:30))|(?:(?:0[13578]|1[02])-31)"></td>
+      <td><input type="time" placeholder="Start of Regular Shift"></td>
+      <td><input type="time" placeholder="End of Regular Shift"></td>
+      <td><input type="time" placeholder="Start of Overtime"></td>
+      <td><input type="time" placeholder="End of Overtime"></td>
+      <td><input type="text" ></td>
+      
+    </tr>
+  </tbody>
+</table>
+
+
+  <input type="submit" name="submit" value="Submit">
+  <INPUT type="button" value="Add Row" onClick="addRow('dataTable')" />
+
+  <INPUT type="button" value="Delete Row" onClick="deleteRow('dataTable')" />
+</form>
+
+
+<SCRIPT language="javascript">
+    function addRow(tableID) {
+
+      var table = document.getElementById(tableID);
+
+      var rowCount = table.rows.length;
+      var row = table.insertRow(rowCount);
+
+      var colCount = table.rows[0].cells.length;
+
+      for(var i=0; i<colCount; i++) {
+
+        var newcell = row.insertCell(i);
+
+        newcell.innerHTML = table.rows[0].cells[i].innerHTML;
+        //alert(newcell.childNodes);
+        switch(newcell.childNodes[0].type) {
+          case "text":
+              newcell.childNodes[0].value = "";
+              break;
+          case "checkbox":
+              newcell.childNodes[0].checked = false;
+              break;
+          case "select-one":
+              newcell.childNodes[0].selectedIndex = 0;
+              break;
+        }
+      }
+    }
+
+    function deleteRow(tableID) {
+      try {
+      var table = document.getElementById(tableID);
+      var rowCount = document.getElementById(tableID).rows.length;
+
+      for(var i=0; i<rowCount; i++) {
+        var row = table.rows[i];
+        var chkbox = row.cells[0].childNodes[0];
+        if(null != chkbox && true == chkbox.checked) {
+          if(rowCount <= 1) {
+            alert("Cannot delete all the rows.");
+            break;
+          }
+          table.deleteRow(i);
+          rowCount--;
+          i--;
+        }
+
+
+      }
+      }catch(e) {
+        alert(e);
+      }
+    }
+
+  </SCRIPT>
+</body>
+</html>
