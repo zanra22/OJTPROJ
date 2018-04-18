@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+	<input id="someInput">
+<div id="someDiv"></div>
+
+<script src="jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+  $('#someInput').on("input", function() {
+    $('#someDiv').text($(this).val());
+  });
+});
+</script>
+</body>
+</html>
