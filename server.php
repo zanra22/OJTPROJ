@@ -18,19 +18,7 @@ $db = mysqli_connect('localhost', 'root', 'str0ngpa$$w0rd', 'registration');
 
 
 $db1 = mysqli_connect('localhost', 'root', 'str0ngpa$$w0rd', 'registration');
-// $db2 = mysqli_connect('localhost', 'root', 'str0ngpa$$w0rd', 'practice');
-// $asd = strtoupper(string)
 
-// if (isset($_POST['form_reg'])) {
-//     $reason1 = mysqli_real_escape_string($db, $_POST['reason_1']);
-
-//     if (empty($reason1)) { array_push($errors, "Reason is required"); }
-
-//     $_SESSION['success'] = "Form Submitted";
-//     header('location: index.php');
-
-
-// }
 // REGISTER USER
 if (isset($_POST['reg_user'])) {
   // receive all input values from the form
@@ -108,8 +96,6 @@ if (isset($_POST['reg_user'])) {
     $mail->setFrom('arnazdj@gmail.com', 'New User Registration');
     $mail->addAddress('arnazdj@gmail.com', 'Joe User');     // 
 
-    
-
     //Content
     $mail->isHTML(true);                                  // Set email format to HTML
     $mail->Subject = 'New User Registration';
@@ -131,15 +117,34 @@ if (isset($_POST['reg_user'])) {
         $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_type']));
         $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
         $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
+
         // $_SESSION['employee_N'] = $employee_Number;
         if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
 
 if (count($errors) == 0) {
-        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department,email) 
-              VALUES('$reason_undertime','$fullname','$emp', '$request', '$department', '$email')";
+        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department,email,dept_approved) 
+              VALUES('$reason_undertime','$fullname','$emp', '$request', '$department', '$email', '$test2')";
     mysqli_query($db, $query3);
     // session_start();
- ;
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
     header('location: undertime.php');
 
     $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
@@ -157,8 +162,61 @@ if (count($errors) == 0) {
 
     $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('johnanthonylabso@gmail.com', 'New User Registration');
-    $mail->addAddress('johnanthonylabso@gmail.com', 'Joe User');     // 
+    if($test == 'MARKETING'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('arnazdj@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+
+
+        // 
 
     
 
@@ -178,12 +236,23 @@ if (count($errors) == 0) {
         $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_type']));
         $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
         $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
-        // $_SESSION['employee_N'] = $employee_Number;
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
         if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
 
 if (count($errors) == 0) {
-        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department) 
-              VALUES('$reason_undertime','$fullname','$emp', '$request','$department')";
+        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department, dept_approved) 
+              VALUES('$reason_undertime','$fullname','$emp', '$request','$department', '$test2')";
     mysqli_query($db, $query3);
     // session_start();
  ;
@@ -203,8 +272,58 @@ if (count($errors) == 0) {
 
     $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('johnanthonylabso@gmail.com', 'New User Registration');
-    $mail->addAddress('johnanthonylabso@gmail.com', 'Joe User');     // 
+    if($test == 'MARKETING'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('arnazdj@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }    // 
 
     
 
@@ -224,12 +343,23 @@ if (isset($_POST['no_out_reg'])) {
         $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_type']));
         $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
         $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
-        // $_SESSION['employee_N'] = $employee_Number;
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
         if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
 
 if (count($errors) == 0) {
-        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department) 
-              VALUES('$reason_undertime','$fullname','$emp', '$request','$department')";
+        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department,dept_approved) 
+              VALUES('$reason_undertime','$fullname','$emp', '$request','$department', '$test2')";
     mysqli_query($db, $query3);
     // session_start();
  ;
@@ -249,8 +379,58 @@ if (count($errors) == 0) {
 
     $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('johnanthonylabso@gmail.com', 'New User Registration');
-    $mail->addAddress('johnanthonylabso@gmail.com', 'Joe User');     // 
+    if($test == 'MARKETING'){
+        $mail->setFrom('arnazdj@gmail.com', 'No Out Request');
+    $mail->addAddress('arnazdj@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('arnazdj@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('arnazdj@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('arnazdj@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('arnazdj@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('arnazdj@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('arnazdj@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('arnazdj@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('arnazdj@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('arnazdj@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('arnazdj@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('arnazdj@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('arnazdj@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }        // 
 
     
 
@@ -270,12 +450,23 @@ if (isset($_POST['official_business_reg'])) {
         $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_type']));
         $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
         $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
-        // $_SESSION['employee_N'] = $employee_Number;
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
         if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
 
 if (count($errors) == 0) {
-        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department) 
-              VALUES('$reason_undertime','$fullname','$emp', '$request', '$department')";
+        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department,dept_approved) 
+              VALUES('$reason_undertime','$fullname','$emp', '$request', '$department', '$test2')";
     mysqli_query($db, $query3);
     // session_start();
  ;
@@ -295,8 +486,58 @@ if (count($errors) == 0) {
 
     $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('johnanthonylabso@gmail.com', 'New User Registration');
-    $mail->addAddress('johnanthonylabso@gmail.com', 'Joe User');     // 
+    if($test == 'MARKETING'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('arnazdj@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }      // 
 
     
 
@@ -317,12 +558,23 @@ if (count($errors) == 0) {
         $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_type']));
         $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
         $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
-        // $_SESSION['employee_N'] = $employee_Number;
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
         if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
 
 if (count($errors) == 0) {
-        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department) 
-              VALUES('$reason_undertime','$fullname','$emp', '$request', '$department')";
+        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department,dept_approved) 
+              VALUES('$reason_undertime','$fullname','$emp', '$request', '$department', '$test2')";
     mysqli_query($db, $query3);
     // session_start();
  ;
@@ -342,8 +594,58 @@ if (count($errors) == 0) {
 
     $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('johnanthonylabso@gmail.com', 'New User Registration');
-    $mail->addAddress('johnanthonylabso@gmail.com', 'Joe User');     // 
+    if($test == 'MARKETING'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('arnazdj@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }       // 
 
     
 
@@ -369,13 +671,25 @@ if (isset($_POST['overtime_submit'])) {
         $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
         $reason_overtime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
         $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
         if (empty($total)) { array_push($errors, "Total Hours is Required! Press the = button."); }
         // $_SESSION['employee_N'] = $employee_Number;
         // if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
 
 if (count($errors) == 0) {
-        $query3 = "INSERT INTO form (employeeNum,request_type,fullname,name,shift1 , startdate, enddate, result,reason,department) 
-              VALUES('$emp','$request','$fullname','$date','$start1','$over1', '$over2','$total','$reason_overtime', '$department')";
+        $query3 = "INSERT INTO form (employeeNum,request_type,fullname,name,shift1 , startdate, enddate, result,reason,department,dept_approved) 
+              VALUES('$emp','$request','$fullname','$date','$start1','$over1', '$over2','$total','$reason_overtime', '$department', '$test2')";
 
     mysqli_query($db, $query3);
      
@@ -399,8 +713,58 @@ if (count($errors) == 0) {
 
     $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('johnanthonylabso@gmail.com', 'New User Registration');
-    $mail->addAddress('johnanthonylabso@gmail.com', 'Joe User');     // 
+    if($test == 'MARKETING'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('arnazdj@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('arnazdj@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }      // 
 
     
 

@@ -15,7 +15,7 @@
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
   <script>
   function getPosition(val){
     $.ajax({
@@ -107,10 +107,10 @@
                 Position<span class="req">*</span>
               </label>
                 <select id="position-list" name="position">
-        <option value="<?php echo $rs["position"]; ?>"><?php
-        echo $rs["position"] ?></option>
-        </select>
-          </div>
+                <option value="<?php echo $rs["position"]; ?>"><?php
+                echo $rs["position"] ?></option>
+              </select>
+              </div>
           </div>
 
 
@@ -161,7 +161,7 @@
             <input name="password" type="password" autocomplete="off"/>
           </div>
           
-          <p class="forgot"><a href="#">Forgot Password?</a></p>
+          <!-- <p class="forgot"><a href="#">Forgot Password?</a></p> -->
           
           <button name="login_user" class="button button-block"/>Log In</button>
           

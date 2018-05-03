@@ -2,12 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 	<link rel="stylesheet" type="text/css" href="ojtCss/main.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<title></title>
 </head>
-<body>
+<body style="background-color: black;">
 	<div class="adminindex_half">
     <div class="container">
         <div class="row">
@@ -17,7 +16,7 @@
             </div>
         </div> 
     </div>
-<div class = "form">
+<div style="text-align: center;color: #bb9121;font-size: 20px;" class = "form">
 	<?php
 		$servername = 'localhost';
 		$username = 'root';
@@ -56,13 +55,14 @@
 </div>
 <div class="adminindex_content">
 		<!-- <hr> -->
-	<p><a  class="loginButton class1 zoom" href="ojtForm/undertime.php" name="employee_form">Undertime</a><br><br></p><br>
-	<p><a  class="loginButton class1 zoom" href="ojtForm/late_timein.php" name="employee_form">Late Time In</a><br><br></p><br>
-	<p><a  class="loginButton class1 zoom" href="ojtForm/overtime_final.php" name="employee_form">Overtime</a><br><br></p><br>
-   	<p><a  class="loginButton class1 zoom" href="ojtForm/official_business.php" name="employee_form">Official Business</a><br><br></p><br>
-   	<p><a  class="loginButton class1 zoom" href="ojtForm/no_in.php" name="employee_form">No In</a><br><br></p><br>
-   	<p><a  class="loginButton class1 zoom" href="ojtForm/no_out.php" name="employee_form">No Out</a><br><br></p><br>
-   	<p><a class="loginButton class1 zoom" href="../index.php">Home</a></p>
+	<p><a style="text-decoration: none;color: #bb9121;" class="loginButton" href="ojtForm/undertime.php" name="employee_form">Undertime</a></p>
+	<p><a  style="text-decoration: none;color: #bb9121;" class="loginButton" href="ojtForm/late_timein.php" name="employee_form">Late Time In</a></p>
+	<p><a style="text-decoration: none;color: #bb9121;" class="loginButton" href="ojtForm/overtime_final.php" name="employee_form">Overtime</a></p>
+   	<p><a style="text-decoration: none;color: #bb9121;" class="loginButton" href="ojtForm/official_business.php" name="employee_form">Official Business</a></p>
+   	<p><a style="text-decoration: none;color: #bb9121;" class="loginButton" href="ojtForm/no_in.php" name="employee_form">No In</a></p>
+   	<p><a style="text-decoration: none;color: #bb9121;" class="loginButton" href="ojtForm/no_out.php" name="employee_form">No Out</a></p>
+
+   	<p><a style="text-decoration: none;color: #bb9121;" class="loginButton" href="../index.php">Home</a></p>
 </div>
 </body>
 </html>

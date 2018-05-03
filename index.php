@@ -67,7 +67,7 @@ if(!empty($_POST['add'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Facebook Like Header Notification in PHP</title>
   <link rel="stylesheet" href="notification-demo-style.css" type="text/css">
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script type="text/javascript">
 
   function myFunction() {
@@ -90,6 +90,18 @@ if(!empty($_POST['add'])) {
       }
     });
   });
+   function getPosition(val, val2){
+    var id = $(val2).data("id");
+    $.ajax({
+      type:"POST",
+      url: "get_state.php",
+      data: 'department='+val,
+      success: function(data){
+        $("#position-list_" + id).html(data);
+        // alert(id);
+      }
+    });
+  }
      
   </script>
 </head>
@@ -270,6 +282,8 @@ if(!empty($_POST['add'])) {
 
 <?php } ?>
 
+
+
 <div class="half">
     <div class="container">
         <div class="row">
@@ -303,6 +317,8 @@ if(!empty($_POST['add'])) {
         <!-- </div> -->
         <?php if(isset($message)) { ?> <div class="error"><?php echo $message; ?></div> <?php } ?>
         <?php if(isset($success)) { ?> <div class="success"><?php echo $success;?></div> <?php } ?> 
+
+
          <?php if($_SESSION['type'] == 'Employee'){ ?>
             <div class="bg">
               <div id="mySidenav"  class="sidenav">
@@ -310,6 +326,54 @@ if(!empty($_POST['add'])) {
                 <a href="index.php?logout='1'" id="logout1_employee">Logout</a>
               </div>
             </div>
+
+            <form class="content" action="index.php" method="post">
+   <div  class="maintable">
+      <table style="border: 1px solid #bb9121;" class="table table-bordered table-striped" align="center">
+        <!-- <table class="table table-bordered table-striped" align="center"> -->
+    <tr style="border: 1px solid #bb9121;">
+      <!-- <th>I.D</th> -->
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Employee Number</th>
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Request Type</th>
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Date Filed</th>
+      <!-- <th colspan="2">Regular Shift</th> -->
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Total Hours</th>
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Reason</th>
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Status</th>
+    </tr>
+<!-- </table> -->
+
+
+    <?php 
+      $conn = mysqli_connect("localhost", "root", 'str0ngpa$$w0rd', "registration");
+      if ($conn-> connect_error) {
+        die("Connection Failed:".$conn->connect_error);
+      }
+      if (isset($_SESSION['employee_N'])) {
+        $employee_Number = $_SESSION['employee_N'];
+      $sql = "SELECT employeeNum,request_type,id, name, shift1, is_approved, startdate, enddate, result, reason FROM form WHERE employeeNum = '$employee_Number'  ";
+      $result1 = $conn-> query($sql);
+      if ($result1-> num_rows > 0) {
+        // echo '<table class="table table-bordered table-striped" align="center">';
+        while ($row = $result1-> fetch_assoc()){
+          echo '<tr><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
+
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;">'.$row["employeeNum"].'';
+            echo '</td><td style="border: 1px solid #bb9121;color: #bb9121;">'.$row["request_type"].'';
+            echo '</td><td style="border: 1px solid #bb9121;color: #bb9121;">'. $row["name"].'</td>';
+            echo  '<td style="border: 1px solid #bb9121;color: #bb9121;">'. $row["result"].'</td>';
+            echo  '<td style="border: 1px solid #bb9121;color: #bb9121;">'. $row["reason"].'</td>';
+            echo '<td style="border: 1px solid #bb9121;color: #bb9121;">'. $row["is_approved"].'</td></tr>';
+        }
+        echo "</table>";
+      }
+      else{
+        echo "0 result";
+      }
+    }
+    ?>
+
+
          <?php } ?>
 
           <?php if($_SESSION['type'] == 'staff'){ ?>
@@ -322,72 +386,8 @@ if(!empty($_POST['add'])) {
                 <a href="index.php?logout='1'" id="logout1_employee">Logout</a>
               </div>
             </div>
-         <?php } ?>
 
-
-
-
-
-         <?php if($_SESSION['type'] == 'deptHead'){ ?>
-         <button id="notification-icon" name="button" onclick="myFunction()" class="dropbtn"><span href="#" id="notification-count"><?php if($count>0) { echo $count; } ?></span><img style="height: 50px; margin-bottom: 10px;" src="notify.png" /></button>
-         <div class="notification-latest" id="notification-latest"></div>
-          <div class="bg">
-              <div id="mySidenav"  class="sidenav">
-                  <a href="form.php" name="employee_form" id="unified1_dept">UNIFIED EMPLOYEE ATTENDANCE FORM</a>
-
-                  <a href="ojtPending/pending_undertime_dept.php" name="approval_form" id="penund1">Pending Undertime</a>
-
-                  <a href="ojtPending/pending_overtime_dept.php" name="approval_form" id="penov1">Pending Overtime</a>
-
-                  <a href="ojtPending/pending_late_time_in_dept.php" name="approval_form" id="penlate1">Pending Late Time-IN</a>
-                </div>
-            </div>
-
-          <div class="gb">
-              <div id="mySidenav1" class="sidenav1">
-                  <a href="ojtPending/pending_official_business_dept.php" name="approval_form" id="penoff1">Pending Official Business</a>
-
-                  <a href="ojtPending/pending_no_time_in_dept.php" name="approval_form" id="penni1">Pending No In</a>
-
-                  <a href="ojtPending/pending_no_out_dept.php" name="approval_form" id="penno1">Pending No Out</a>
-          
-                  <a href="index.php?logout='1'" id="logout1">Logout</a>
-              </div>
-          </div>
-         <?php } ?>
-      
-         <?php if($_SESSION['type'] == 'HR'){ ?>
-         <button id="notification-icon" name="button" onclick="myFunction()" class="dropbtn"><span href="#" id="notification-count"><?php if($count>0) { echo $count; } ?></span><img style="height: 50px; margin-bottom: 10px;" src="notify.png" /></button>
-         <div class="notification-latest" id="notification-latest"></div>
-         <div class="bg">
-            <div id="mySidenav" class="sidenav1">
-              <a href="form.php" name="employee_form" id="unified1">UNIFIED EMPLOYEE ATTENDANCE FORM</a>
-              <a href="ojtPending/pending_with_reject.php" name="approval_form" id="penreg1">Pending Registration</a>
-              <a href="ojtPending/pending_undertime_dept.php" name="approval_form" id="penund1">Pending Undertime</a>
-              <a href="ojtPending/pending_overtime_dept.php" name="approval_form" id="penov1">Pending Overtime</a>
-              <a href="ojtPending/pending_late_time_in_dept.php" name="approval_form" id="penlate1">Pending Late Time-IN</a>
-            </div>
-        </div>
-
-        <div class="gb">
-              <div id="mySidenav1" class="sidenav1">
-                  <a href="ojtPending/pending_official_business_dept.php" name="approval_form" id="penoff1">Pending Official Business</a>
-
-                  <a href="ojtPending/pending_no_time_in_dept.php" name="approval_form" id="penni1">Pending No In</a>
-
-                  <a href="ojtPending/pending_no_out_dept.php" name="approval_form" id="penno1">Pending No Out</a>
-          
-                  <a href="index.php?logout='1'" id="logout1">Logout</a>
-              </div>
-          </div>
-
-          <?php } ?>
-
-      
-    <?php endif ?>
-
-
-    <form class="content" action="index.php" method="post">
+            <form class="content" action="index.php" method="post">
    <div  class="maintable">
       <table style="border: 1px solid #bb9121;" class="table table-bordered table-striped" align="center">
         <!-- <table class="table table-bordered table-striped" align="center"> -->
@@ -441,6 +441,310 @@ if(!empty($_POST['add'])) {
 
 
 </form>
+         <?php } ?>
+
+
+
+
+
+         <?php if($_SESSION['type'] == 'deptHead'){ ?>
+         <button id="notification-icon" name="button" onclick="myFunction()" class="dropbtn"><span href="#" id="notification-count"><?php if($count>0) { echo $count; } ?></span><img style="height: 50px; margin-bottom: 10px; width: 50px;" src="notify.png" /></button>
+         <div class="notification-latest" id="notification-latest"></div>
+          <div class="bg">
+              <div id="mySidenav"  class="sidenav">
+                  <a href="form.php" name="employee_form" id="unified1_dept">UNIFIED EMPLOYEE ATTENDANCE FORM</a>
+
+                  <a href="ojtPending/pending_undertime_dept.php" name="approval_form" id="penund1">Pending Undertime</a>
+
+                  <a href="ojtPending/pending_overtime_dept.php" name="approval_form" id="penov1">Pending Overtime</a>
+
+                  <a href="ojtPending/pending_late_time_in_dept.php" name="approval_form" id="penlate1">Pending Late Time-IN</a>
+                </div>
+            </div>
+
+          <div class="gb">
+              <div id="mySidenav1" class="sidenav1">
+                  <a href="ojtPending/pending_official_business_dept.php" name="approval_form" id="penoff1">Pending Official Business</a>
+
+                  <a href="ojtPending/pending_no_time_in_dept.php" name="approval_form" id="penni1">Pending No In</a>
+
+                  <a href="ojtPending/pending_no_out_dept.php" name="approval_form" id="penno1">Pending No Out</a>
+          
+                  <a href="index.php?logout='1'" id="logout1">Logout</a>
+              </div>
+          </div>
+
+          <form class="content" action="index.php" method="post">
+   <div  class="maintable">
+      <table style="border: 1px solid #bb9121;" class="table table-bordered table-striped" align="center">
+        <!-- <table class="table table-bordered table-striped" align="center"> -->
+    <tr style="border: 1px solid #bb9121;">
+      <!-- <th>I.D</th> -->
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Employee Number</th>
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Request Type</th>
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Date Filed</th>
+      <!-- <th colspan="2">Regular Shift</th> -->
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Total Hours</th>
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Reason</th>
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Status</th>
+    </tr>
+<!-- </table> -->
+
+
+    <?php 
+      $conn = mysqli_connect("localhost", "root", 'str0ngpa$$w0rd', "registration");
+      if ($conn-> connect_error) {
+        die("Connection Failed:".$conn->connect_error);
+      }
+      if (isset($_SESSION['employee_N'])) {
+        $employee_Number = $_SESSION['employee_N'];
+      $sql = "SELECT employeeNum,request_type,id, name, shift1, is_approved, startdate, enddate, result, reason FROM form WHERE employeeNum = '$employee_Number'  ";
+      $result1 = $conn-> query($sql);
+      if ($result1-> num_rows > 0) {
+        // echo '<table class="table table-bordered table-striped" align="center">';
+        while ($row = $result1-> fetch_assoc()){
+          echo '<tr><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
+
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;">'.$row["employeeNum"].'';
+            echo '</td><td style="border: 1px solid #bb9121;color: #bb9121;">'.$row["request_type"].'';
+            echo '</td><td style="border: 1px solid #bb9121;color: #bb9121;">'. $row["name"].'</td>';
+            echo  '<td style="border: 1px solid #bb9121;color: #bb9121;">'. $row["result"].'</td>';
+            echo  '<td style="border: 1px solid #bb9121;color: #bb9121;">'. $row["reason"].'</td>';
+            echo '<td style="border: 1px solid #bb9121;color: #bb9121;">'. $row["is_approved"].'</td></tr>';
+        }
+        echo "</table>";
+      }
+      else{
+        echo "0 result";
+      }
+    }
+
+      
+    ?>
+
+  </table> 
+  </div> 
+
+
+
+</form>
+         <?php } ?>
+      <?php if($_SESSION['type'] == 'ADMIN'){ ?>
+        <div class="bg">
+            <a href="index.php?logout='1'" id="logout1">Logout</a>
+        </div>
+      <?php } ?>
+
+
+         <?php if($_SESSION['type'] == 'HR'){ ?>
+         <button id="notification-icon" name="button" onclick="myFunction()" class="dropbtn"><span href="#" id="notification-count"><?php if($count>0) { echo $count; } ?></span><img style="height: 50px; margin-bottom: 10px;" src="notify.png" /></button>
+         <div class="notification-latest" id="notification-latest"></div>
+         <div class="bg">
+            <div id="mySidenav" class="sidenav1">
+              <a href="form.php" name="employee_form" id="unified1">UNIFIED EMPLOYEE ATTENDANCE FORM</a>
+              <a href="ojtPending/pending_with_reject.php" name="approval_form" id="penreg1">Pending Registration</a>
+              <a href="ojtPending/pending_undertime_dept.php" name="approval_form" id="penund1">Pending Undertime</a>
+              <a href="ojtPending/pending_overtime_dept.php" name="approval_form" id="penov1">Pending Overtime</a>
+              <a href="ojtPending/pending_late_time_in_dept.php" name="approval_form" id="penlate1">Pending Late Time-IN</a>
+            </div>
+        </div>
+
+        <div class="gb">
+              <div id="mySidenav1" class="sidenav1">
+                  <a href="ojtPending/pending_official_business_dept.php" name="approval_form" id="penoff1">Pending Official Business</a>
+
+                  <a href="ojtPending/pending_no_time_in_dept.php" name="approval_form" id="penni1">Pending No In</a>
+
+                  <a href="ojtPending/pending_no_out_dept.php" name="approval_form" id="penno1">Pending No Out</a>
+          
+                  <a href="index.php?logout='1'" id="logout1">Logout</a>
+              </div>
+          </div>
+
+          <form class="content" action="index.php" method="post">
+   <div  class="maintable">
+      <table style="border: 1px solid #bb9121;" class="table table-bordered table-striped" align="center">
+        <!-- <table class="table table-bordered table-striped" align="center"> -->
+    <tr style="border: 1px solid #bb9121;">
+      <!-- <th>I.D</th> -->
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Employee Number</th>
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Request Type</th>
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Date Filed</th>
+      <!-- <th colspan="2">Regular Shift</th> -->
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Total Hours</th>
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Reason</th>
+      <th style="border: 1px solid #bb9121;color: #bb9121;">Status</th>
+    </tr>
+<!-- </table> -->
+
+
+    <?php 
+      $conn = mysqli_connect("localhost", "root", 'str0ngpa$$w0rd', "registration");
+      if ($conn-> connect_error) {
+        die("Connection Failed:".$conn->connect_error);
+      }
+      if (isset($_SESSION['employee_N'])) {
+        $employee_Number = $_SESSION['employee_N'];
+      $sql = "SELECT employeeNum,request_type,id, name, shift1, is_approved, startdate, enddate, result, reason FROM form WHERE employeeNum = '$employee_Number'  ";
+      $result1 = $conn-> query($sql);
+      if ($result1-> num_rows > 0) {
+        // echo '<table class="table table-bordered table-striped" align="center">';
+        while ($row = $result1-> fetch_assoc()){
+          echo '<tr><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
+
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;">'.$row["employeeNum"].'';
+            echo '</td><td style="border: 1px solid #bb9121;color: #bb9121;">'.$row["request_type"].'';
+            echo '</td><td style="border: 1px solid #bb9121;color: #bb9121;">'. $row["name"].'</td>';
+            echo  '<td style="border: 1px solid #bb9121;color: #bb9121;">'. $row["result"].'</td>';
+            echo  '<td style="border: 1px solid #bb9121;color: #bb9121;">'. $row["reason"].'</td>';
+            echo '<td style="border: 1px solid #bb9121;color: #bb9121;">'. $row["is_approved"].'</td></tr>';
+        }
+        echo "</table>";
+      }
+      else{
+        echo "0 result";
+      }
+    }
+
+      
+    ?>
+
+  </table> 
+  </div> 
+
+
+
+</form>
+
+          <?php } ?>
+
+      
+    <?php endif ?>
+
+    <?php if($_SESSION['type'] == 'ADMIN') { ?>
+      <form class="content" action="index.php" method="post">
+ <div class="formtable"> 
+  <table class="table table-bordered table-striped" align="center">
+    <tr>
+      <!-- <th>I.D</th> -->
+      <th>Employee Number</th>
+      <th>First Name</th>
+      <th>Middle Name</th>
+      <th>Last Name</th>
+      <th>Department</th>
+      <th>Position</th>
+      <th>E-mail</th>
+      <th>Status</th>
+      <th>Account Type</th>
+    </tr>
+ 
+
+<?php 
+    $conn = mysqli_connect("localhost", "root", 'str0ngpa$$w0rd', "registration");
+      if ($conn-> connect_error) {
+        die("Connection Failed:".$conn->connect_error);
+      }
+      $employee_Number = $_SESSION['employee_N'];
+            $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+              $price = mysqli_query($conn,$user);
+              $result = mysqli_fetch_assoc($price);
+
+              $_SESSION['department'] = $result['department'];
+              $test = $_SESSION['department'];
+              $x = 0;
+      $sql = "SELECT * FROM user ";
+      $result1 = $conn-> query($sql);
+if(isset($_POST['update'])){
+      $fname = $_POST['firstname'];
+      $mname = $_POST['middlename'];
+      $lname = $_POST['lastname'];
+      $eNum = $_POST['employee_Number'];
+      $dept = $_POST['department'];
+      $posi = $_POST['position'];
+      $email = $_POST['email'];
+      $approved = $_POST['is_approved'];
+      $type = $_POST['type'];
+
+      foreach ($_POST["id"] as $id) {
+        $approved = mysqli_real_escape_string($conn,$_POST["is_approved"][$id]);
+        $fname = mysqli_real_escape_string($conn,$_POST["firstname"][$id]);
+        $mname = mysqli_real_escape_string($conn,$_POST["middlename"][$id]);
+        $lname = mysqli_real_escape_string($conn,$_POST["lastname"][$id]);
+        $eNum = mysqli_real_escape_string($conn,$_POST["employee_Number"][$id]);
+        $dept = mysqli_real_escape_string($conn,$_POST["department"][$id]);
+        $posi = mysqli_real_escape_string($conn,$_POST["position"][$id]);
+        $email = mysqli_real_escape_string($conn,$_POST["email"][$id]);
+        $type = mysqli_real_escape_string($conn,$_POST["type"][$id]);
+
+        $query = "UPDATE `user` SET `employeeNum`='".$eNum."', `firstname`='".$fname."', `middlename`='".$mname."', `lastname`='".$lname."', `department`='".$dept."', `position`='".$posi."', `email`='".$email."', `is_approved`='".$approved."', `type`='".$type."' WHERE `id` = $id LIMIT 1";
+   
+   
+        $result = mysqli_query($conn, $query);
+      }
+}
+      if ($result1-> num_rows > 0) {
+        while ($row = $result1-> fetch_assoc() ){
+          $x++;
+          echo '<tr><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
+
+          echo '</td><td><input name = employee_Number['.$row["id"].'] type = text value="'. $row["employeeNum"].'"></input></td>';
+
+            echo '</td><td><input name = firstname['.$row["id"].'] type = text value="'. $row["firstname"].'"></input></td>';
+
+            echo '</td><td><input name = middlename['.$row["id"].'] type = text  value="'. $row["middlename"].'"></input></td>';
+
+            echo '</td><td><input name = lastname['.$row["id"].'] type = text value="'. $row["lastname"].'"></input></td>';
+            ?>
+            
+          <?php  
+            echo '<td><select autocomplete="off" data-id="'.$x.'"  id="department-list" name="department['.$row["id"].']" onChange="getPosition(this.value, this)"><option autocomplete="off" style="text-align: center;" value="'.$row['department'].'">'.$row['department'].'</option>';
+              ?>
+              <?php
+            $sql = "SELECT * FROM dept";
+                $result = $conn->query($sql);
+                while ($rs=$result->fetch_assoc()) {
+                ?>
+                
+              <option value="<?php echo $rs["department"]; ?>"><?php echo $rs["department"]?></option>
+           <?php } ?>
+
+            </select></td>  
+          <?php
+            echo '<td><select id="position-list_'.$x.'" name="position['.$row["id"].']">
+            <option autocomplete="off" style="text-align: center;" value="'.$row['position'].'">'.$row['position'].'</option>
+              <option value="'.$rs["position"].'">'.$rs["position"].'</option>
+              </select></td>';
+              
+            echo '</td><td><input name = email['.$row["id"].'] type = text  value="'. $row["email"].'"></input></td>';
+
+            echo '</td><td><select  name = is_approved['.$row["id"].']>
+            <option value = '.$row['is_approved'].'>'.$row['is_approved'].'</option>
+            <option value = PENDING>PENDING</option><option value = APPROVED>APPROVED</option><option value = REJECT>REJECT</OPTION></select></td>';
+
+            echo '</td><td><select  name = type['.$row["id"].']>
+            <option value = '.$row['type'].'>'.$row['type'].'</option>
+            <option value = HR>HR</option>
+            <option value = deptHead>Department Head</option>
+            <option value = Employee>Employee</OPTION>
+            <option value = staff>Staff</OPTION>
+            </select></td></tr>';
+        }
+        echo "</table>";
+      }
+      else{
+        echo "0 result";
+      }
+
+
+?>
+<input type="submit" class="btn btn-default" name="update" value="Update Data">
+ </table>
+</div>
+</form>
+<?php } ?>
+
+
+    
   </div>
 </div>
     

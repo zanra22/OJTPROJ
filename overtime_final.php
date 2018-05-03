@@ -42,12 +42,12 @@ table, td {
 </style>
 
 </head>
-<body>
+<body style="background-color: black;">
 <div class="half">
     <div class="container">
         <div class="row">
             <div class = "one col-md-12">
-                <img src="../img/logo.png">
+                <img style="width: 70%; height: 200px;margin-left: auto;margin-right: auto;display: block;margin-top: 20px;" src="../img/logo.png">
                 <hr>
             </div>
         </div> 
@@ -56,18 +56,18 @@ table, td {
 	<?php include('../errors.php'); ?>
 	<table class="table table-bordered table-striped" align="center">
 		<!-- <?php  ?> -->
-		<tr>
+		<tr style="border: 1px solid #bb9121;">
 			
 			<!-- <th>Employee Number</th> -->
       <!-- <th>Name</th> -->
       <!-- <th>Request Type</th> -->
-			<th style="display: block">Date</th>
-			<th colspan="2" style="text-align: center">Regular Shit</th>
-			<th>Overtime</th>
-			<th></th>
-			<th>Total Hours</th>
+			<th style="display: block; border: 1px solid #bb9121; color: #bb9121;">Date</th>
+			<th colspan="2" style="text-align: center; border: 1px solid #bb9121; color: #bb9121;">Regular Shit</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Overtime</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;"></th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Total Hours</th>
 			<!-- <th></th> -->
-      <th>Reason</th>
+      <th style="border: 1px solid #bb9121; color: #bb9121;">Reason</th>
 
 		</tr>
 		<?php 
@@ -89,22 +89,22 @@ table, td {
 			    		?>
               <input hidden style="text-align:center;" type = "text" readonly name = "request_type" value = "OVERTIME"></input>
 
-			    		<td><input required name="name" type="date" value="<?php if(!empty($_POST["name"])) { echo $_POST["name"]; } ?>" placeholder="yyyy-mm-dd"></td>
+			    		<td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:black;" required name="name" type="date" value="<?php if(!empty($_POST["name"])) { echo $_POST["name"]; } ?>" placeholder="yyyy-mm-dd"></td>
 
-      					<td><input required name="shift1" value="<?php if(!empty($_POST["shift1"])) { echo $_POST["shift1"]; } ?>"  type="time" placeholder="Start of Regular Shift"></td>
+      					<td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:black;" required name="shift1" value="<?php if(!empty($_POST["shift1"])) { echo $_POST["shift1"]; } ?>"  type="time" placeholder="Start of Regular Shift"></td>
       					
-      					<td><input name="startdate" value="<?php if(!empty($_POST["startdate"])) { echo $_POST["startdate"]; } ?>" required=required type="time" placeholder="End of Regular Shift"></td>
+      					<td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:black;" name="startdate" value="<?php if(!empty($_POST["startdate"])) { echo $_POST["startdate"]; } ?>" required=required type="time" placeholder="End of Regular Shift"></td>
       					
-      					<td><input required name="enddate" value="<?php if(!empty($_POST["startdate"])) { echo $_POST["enddate"]; } ?>" type="time" placeholder="Start of Overtime"></td>
+      					<td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:black;" required name="enddate" value="<?php if(!empty($_POST["startdate"])) { echo $_POST["enddate"]; } ?>" type="time" placeholder="Start of Overtime"></td>
 
       					
       					<!-- <td><input name="over2[id]" type="time" placeholder="End of Overtime"></td> -->
       					
-      					<td><button required type="submit" name="submit" value="Find Difference" class="btnAction">=</button></td>
+      					<td style="border: 1px solid #bb9121; color: #bb9121;"><button required type="submit" name="submit" value="Find Difference" class="btnAction">=</button></td>
 
       					
-      					<td><input required=required readonly id="display" name="result" type="number" value="<?php echo isset($hours_difference)?$hours_difference:""?>"></td>
-                <td><input style = "width:400px" type = "text" name = "reason_1"></input></td>
+      					<td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:black;" required=required readonly id="display" name="result" type="number" value="<?php echo isset($hours_difference)?$hours_difference:""?>"></td>
+                <td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:black;" style = "width:400px" type = "text" name = "reason_1"></input></td>
       					</tr>
       					
       				</table>

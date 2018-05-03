@@ -35,7 +35,7 @@ table, td {
             </div>
         </div> 
     </div>
-<form class="content" action="pending_overtime_dept.php" method="post">
+<form class="content" action="pending_overtime.php" method="post">
  <div class="formtable"> 
 	<table class="table table-bordered table-striped" align="center">
 		<tr>
@@ -63,7 +63,7 @@ table, td {
       				$_SESSION['department'] = $result['department'];
       				$test = $_SESSION['department'];
 
-			$sql = "SELECT employeeNum,request_type,id, name, shift1, dept_approved, startdate, enddate, result FROM  form WHERE dept_approved='APPROVED' AND request_type='OVERTIME'";
+			$sql = "SELECT employeeNum,request_type,id, name, shift1, is_approved, startdate, enddate, result FROM  form WHERE dept_approved='APPROVED' AND request_type='OVERTIME' AND is_approved = 'PENDING'";
 			$result1 = $conn-> query($sql);
  
 if(isset($_POST['update']))
@@ -150,7 +150,7 @@ if(isset($_POST['update']))
       				$_SESSION['department'] = $result['department'];
       				$test = $_SESSION['department'];
 
-			$sql = "SELECT * FROM  form WHERE dept_approved='PENDING' AND request_type='OVERTIME' AND department ='$test'";
+			$sql = "SELECT employeeNum,request_type,id, name, shift1, is_approved, startdate, enddate, result FROM  form WHERE is_approved='PENDING' AND request_type='OVERTIME' AND department ='$test'";
 			$result1 = $conn-> query($sql);
  
 if(isset($_POST['update']))
@@ -161,8 +161,7 @@ if(isset($_POST['update']))
    			// $fname = $_POST['fullname'];
    			// $mname = $_POST['request_type'];
    			// $lname = $_POST['reason'];
-			$email = $_POST['email'];
-   			$approve = $_POST['dept_approved'];
+   			$approve = $_POST['is_approved'];
 
            
       foreach ($_POST["id"] as $id ) {
@@ -170,11 +169,10 @@ if(isset($_POST['update']))
    			// $fname = mysqli_real_escape_string($conn,$_POST["fullname"][$id]);
    			// $rtype = mysqli_real_escape_string($conn,$_POST["request_type"][$id]);
    			// $reason = mysqli_real_escape_string($conn,$_POST["reason"][$id]);
-   			$approve = mysqli_real_escape_string($conn,$_POST["dept_approved"][$id]);
-   			$email = mysqli_real_escape_string($conn,$_POST["email"][$id]);
+   			$approve = mysqli_real_escape_string($conn,$_POST["is_approved"][$id]);
 
 
-   			$query = "UPDATE `form` SET `dept_approved`='".$approve."' WHERE `id` = $id LIMIT 1";
+   			$query = "UPDATE `form` SET `is_approved`='".$approve."' WHERE `id` = $id LIMIT 1";
    
    
    			$result = mysqli_query($conn, $query);
@@ -206,7 +204,6 @@ if(isset($_POST['update']))
 					echo '</td><td>'.$row["employeeNum"].'';
 
 						echo '</td><td><input name = request_type['.$row["id"].'] type = text readonly = readonly value ="'.$row["request_type"].'"></input>';
-						echo '</td><td><input hidden name = email['.$row["id"].'] type = text readonly = readonly value ="'.$row["email"].'"></input>';
 
 						echo '</td><td><input name = name['.$row["id"].'] type = text readonly = readonly value="'. $row["name"].'"></input></td>';
 						// echo date("g:i a", strtotime("$row[startdate]"));
@@ -218,7 +215,7 @@ if(isset($_POST['update']))
 
 						echo	'<td><input name = reason['.$row["id"].'] type = text readonly=readonly value = "'. $row["result"].'"></input></td>';
 
-						echo '</td><td><select  name = dept_approved['.$row["id"].']><option value = PENDING>PENDING</option><option value = APPROVED>APPROVED</option><option value = REJECT>REJECT</OPTION></select></td></tr>';
+						echo '</td><td><select  name = is_approved['.$row["id"].']><option value = PENDING>PENDING</option><option value = APPROVED>APPROVED</option><option value = REJECT>REJECT</OPTION></select></td></tr>';
 				}
 				echo "</table>";
 			}

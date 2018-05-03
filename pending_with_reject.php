@@ -70,6 +70,7 @@ table, td {
  
 if(isset($_POST['update']))
 {
+
   $email = $_POST['email'];
            foreach ($_POST["id"] as $id) {
             // $id = $_POST['id'];
@@ -80,10 +81,9 @@ if(isset($_POST['update']))
    
    
    $result = mysqli_query($conn, $query);
-  switch ($_POST['is_approved']) {
-    case 'APPROVED':
-      
-   $mail = new PHPMailer\PHPMailer\PHPMailer();                              // Passing `true` enables exceptions
+
+   if($approve == 'APPROVED'){
+    $mail = new PHPMailer\PHPMailer\PHPMailer();                              // Passing `true` enables exceptions
 
     //Server settings
     $mail->SMTPDebug = 0;                                 // Enable verbose debug output
@@ -108,13 +108,23 @@ if(isset($_POST['update']))
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     $mail->send();
-    // exit();
-           
-      break;
-    
-    default:
-       $sql = "DELETE  FROM user WHERE is_approved = 'REJECT'";
-   $mail = new PHPMailer\PHPMailer\PHPMailer();                              // Passing `true` enables exceptions
+           }
+   // mysql query to Update data
+   
+
+   
+   if($result)
+   {
+       echo 'Data Updated';
+   }else{
+       echo 'Data Not Updated';
+   }
+   }
+   
+
+   $sql = "DELETE  FROM user WHERE is_approved = 'REJECT'";
+   if($approve == 'REJECT'){
+    $mail = new PHPMailer\PHPMailer\PHPMailer();                              // Passing `true` enables exceptions
 
     //Server settings
     $mail->SMTPDebug = 0;                                 // Enable verbose debug output
@@ -139,30 +149,15 @@ if(isset($_POST['update']))
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     $mail->send();
-      break;
+  if ($conn->query($sql) === TRUE) {
+      echo "Record deleted successfully";
+  } else {
+      echo "Error deleting record: " . $conn->error;
   }
+   }
    
-
-   // mysql query to Update data
-    
-
-   
- //   if($result)
- //   {
- //       echo 'Data Updated';
- //   }else{
- //       echo 'Data Not Updated';
- //   }
-
-  
-  
-	// if ($conn->query($sql) === TRUE) {
-	//     echo "Record deleted successfully";
-	// } else {
-	//     echo "Error deleting record: " . $conn->error;
-	// }
- //   mysqli_close($conn);
-
+   mysqli_close($conn);
+}
 
 			if ($result1-> num_rows > 0) {
 				while ($row = $result1-> fetch_assoc()){
@@ -179,9 +174,9 @@ if(isset($_POST['update']))
 
 					echo '<td>'.$row["position"].'</td>';
 
-					echo '<td><select id = "is_approved['.$row["id"].']"   name = "is_approved['.$row["id"].']"><option value = PENDING>PENDING</option>
-          <option value = APPROVED>APPROVED</option>
-          <option value = REJECT>REJECT</OPTION>
+					echo '<td><select id = "is_approved['.$row["id"].']"   name = "is_approved['.$row["id"].']"><option value = "PENDING">PENDING</option>
+          <option value = "APPROVED">APPROVED</option>
+          <option value = "REJECT">REJECT</OPTION>
           </select></td>';
 					echo "</tr>";
 				}

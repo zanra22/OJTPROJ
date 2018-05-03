@@ -186,35 +186,35 @@ th {
 
 #unified1 {
     top: 85px;
-    background-color: transparent;
+    background-color: black;
     color: #bb9121;
 }
 #unified1_dept {
     top: 160px;
-    background-color: transparent;
+    background-color: black;
     color: #bb9121;
 }
 #penreg1 {
     top: 210px;
-    background-color: transparent;
+    background-color: black;
     color: #bb9121;
 }
 
 #penund1 {
     top: 295px;
-    background-color: transparent;
+    background-color: black;
     color: #bb9121;
 }
 
 #penov1 {
     top: 383px;
-    background-color: transparent;
+    background-color: black;
     color: #bb9121;
 }
 
 #penlate1 {
     top: 475px;
-    background-color: transparent;
+    background-color: black;
     color: #bb9121;
 }
 
@@ -238,30 +238,30 @@ th {
 
 #penoff1 {
     top: 565px;
-    background-color: transparent;
+    background-color: black;
     color: #bb9121;
 }
 
 #penni1 {
     top: 675px;
-    background-color: transparent;
+    background-color: black;
     color: #bb9121;
 }
 
 #penno1 {
     top: 740px;
-    background-color: transparent;
+    background-color: black;
     color: #bb9121;
 }
 
 #logout1 {
     top: 800px;
-    background-color: transparent;
+    background-color: black;
     color: #bb9121;
 }
 #logout1_employee {
     top: 215px;
-    background-color: transparent;
+    background-color: black;
     color: #bb9121;
 }
 
@@ -287,12 +287,12 @@ th {
 
 #unified2 {
     top: 280px;
-    background-color: transparent;
+    background-color: black;
 }
 
 #logout2 {
     top: 400px;
-    background-color: transparent;
+    background-color: black;
 }
 
 
@@ -474,6 +474,16 @@ div.demo-content input[type='text'],textarea{
         text-decoration: none;
         color: black;
     }
+}
+
+.btn {
+    float: right;
+    cursor: pointer;
+    width: 100%;
+    height: auto;
+    border: none;
+    text-align: center;
+    color: #bb9121;
 }
 
 

@@ -57,7 +57,7 @@ table, td {
 				die("Connection Failed:".$conn->connect_error);
 			}
 
-			$sql = "SELECT employeeNum,fullname,id, request_type, reason, dept_approved FROM form WHERE dept_approved='APPROVED' AND request_type='OFFICIAL BUSINESS'";
+			$sql = "SELECT employeeNum,fullname,id, request_type, reason, is_approved FROM form WHERE request_type='OFFICIAL BUSINESS' AND dept_approved = 'APPROVED' AND is_approved = 'PENDING'";
 			$result1 = $conn-> query($sql);
  
 if(isset($_POST['update']))
@@ -145,7 +145,7 @@ if(isset($_POST['update']))
       				$_SESSION['department'] = $result['department'];
       				$test = $_SESSION['department'];
 
-			$sql = "SELECT * FROM form WHERE dept_approved='PENDING' AND request_type='OFFICIAL BUSINESS' AND department = '$test'";
+			$sql = "SELECT employeeNum,fullname,id, request_type, reason, is_approved, department FROM form WHERE is_approved='PENDING' AND request_type='OFFICIAL BUSINESS' AND department = '$test'";
 			$result1 = $conn-> query($sql);
  
 if(isset($_POST['update']))
@@ -155,8 +155,7 @@ if(isset($_POST['update']))
    			$fname = $_POST['fullname'];
    $mname = $_POST['request_type'];
    $lname = $_POST['reason'];
-   $email = $_POST['email'];
-   $approve = $_POST['dept_approved'];
+   $approve = $_POST['is_approved'];
 
            
       foreach ($_POST["id"] as $id ) {
@@ -164,12 +163,10 @@ if(isset($_POST['update']))
    			$fname = mysqli_real_escape_string($conn,$_POST["fullname"][$id]);
    $mname = mysqli_real_escape_string($conn,$_POST["request_type"][$id]);
    $lname = mysqli_real_escape_string($conn,$_POST["reason"][$id]);
-   $approve = mysqli_real_escape_string($conn,$_POST["dept_approved"][$id]);
-   $email = mysqli_real_escape_string($conn,$_POST["email"][$id]);
+   $approve = mysqli_real_escape_string($conn,$_POST["is_approved"][$id]);
 
 
-
-   $query = "UPDATE `form` SET `fullname`='".$fname."',`reason`='".$lname."',`dept_approved`='".$approve."', `request_type`='".$mname."' WHERE `id` = $id LIMIT 1";
+   $query = "UPDATE `form` SET `fullname`='".$fname."',`reason`='".$lname."',`is_approved`='".$approve."', `request_type`='".$mname."' WHERE `id` = $id LIMIT 1";
    
    
    $result = mysqli_query($conn, $query);
@@ -183,13 +180,12 @@ if(isset($_POST['update']))
 					echo '</td><td>'.$row["employeeNum"].'';
 
 						echo '</td><td><input name = fullname['.$row["id"].'] type = text readonly = readonly value ="'.$row["fullname"].'"></input>';
-						echo '</td><td><input hidden name = email['.$row["id"].'] type = text readonly = readonly value ="'.$row["email"].'"></input>';
 
 						echo '</td><td><input name = request_type['.$row["id"].'] type = text readonly = readonly value="'. $row["request_type"].'"></input>';
 
 						echo	'</td><td><input name = reason['.$row["id"].'] type = text readonly=readonly value = "'. $row["reason"].'"></input>';
 
-						echo '</td><td><select  name = dept_approved['.$row["id"].']><option value = PENDING>PENDING</option><option value = APPROVED>APPROVED</option><option value = REJECT>REJECT</OPTION></select></td></tr>';
+						echo '</td><td><select  name = is_approved['.$row["id"].']><option value = PENDING>PENDING</option><option value = APPROVED>APPROVED</option><option value = REJECT>REJECT</OPTION></select></td></tr>';
 						// echo $_SESSION['department'];
 				}
 				echo "</table>";

@@ -29,12 +29,12 @@ table, td {
 </style>
 
 </head>
-<body>
+<body style="background-color: black;">
 <div class="half">
     <div class="container">
         <div class="row">
             <div class = "one col-md-12">
-                <img src="../img/logo.png">
+                <img style="width: 70%; height: 200px;margin-left: auto;margin-right: auto;display: block;margin-top: 20px;" src="../img/logo.png">
                 <hr>
             </div>
         </div> 
@@ -42,14 +42,14 @@ table, td {
 <form action="official_business.php" method="post">
 	<?php include('../errors.php'); ?>
 	<table class="table table-bordered table-striped" align="center">
-		<tr>
+		<tr style="border: 1px solid #bb9121;">
 			
-			<th>Employee Number</th>
-			<th>Full Name</th>
-			<th>Department</th>
-			<th>Request</th>
-			<th>Reason</th>
-			<th></th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Employee Number</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Full Name</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Department</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Request</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Reason</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;"></th>
 
 		</tr>
 		<?php 
@@ -62,16 +62,16 @@ table, td {
 		if ($result->num_rows > 0) {
 		    // output data of each row
 			while($row = $result->fetch_assoc()) {
-			    echo '<tr><td><input style="text-align:center;"" type = "text"  readonly name = "employeeNumber" value="'.$row["employeeNum"].'"></input></td>';
+			    echo '<tr><td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:black;" type = "text"  readonly name = "employeeNumber" value="'.$row["employeeNum"].'"></input></td>';
 
-			    echo '<td><input style="text-align:center;"" type = "text" readonly name = "full_name" value = "'.$row["lastname"].", ".$row["firstname"]." ".$row["middlename"].'"></input></td>';
-			    echo '<td><input style="text-align:center;"" type = "text"  readonly name = "department" value="'.$row["department"].'"></input></td>';
+			    echo '<td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:black; width:223px;" type = "text" readonly name = "full_name" value = "'.$row["lastname"].", ".$row["firstname"]." ".$row["middlename"].'"></input></td>';
+			    echo '<td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:black;" type = "text"  readonly name = "department" value="'.$row["department"].'"></input></td>';
 
-			    echo '<td><input style="text-align:center;" type = "text" readonly name = "request_type" value = "OFFICIAL BUSINESS"></input></td>';
+			    echo '<td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:black;" type = "text" readonly name = "request_type" value = "OFFICIAL BUSINESS"></input></td>';
 
-			    echo '<td><input style = "width:400px" type = "text" name = "reason_1"></input></td>';
+			    echo '<td style="border: 1px solid #bb9121; color: #bb9121;"><input style = "width:400px; border: 1px solid #bb9121; color: #bb9121;background-color:black;" type = "text" name = "reason_1"></input></td>';
 
-			    echo '<td><button type= "Submit" name= "official_business_reg">Submit</button></td></tr>';
+			    echo '<td style="border: 1px solid #bb9121; color: #bb9121;"><button type= "Submit" name= "official_business_reg">Submit</button></td></tr>';
 		    }
 		}
 	}
