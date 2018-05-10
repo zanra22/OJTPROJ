@@ -1,13 +1,13 @@
 <?php include('../server.php');
 
-function differenceInHours($startOfShift,$overtime){
-  $starttimestamp = strtotime($startOfShift);
-  $endtimestamp = strtotime($overtime);
-  $difference = abs( $starttimestamp - $endtimestamp)/3600;
+function differenceInMinutes($newStartOfShift,$newEndOfShift){
+  $starttimestamp = strtotime($newStartOfShift);
+  $endtimestamp = strtotime($newEndOfShift);
+  $difference = abs($starttimestamp - $endtimestamp)/3600;
   return $difference;
 }
 if(!empty($_POST["submit"])) {
-  $hours_difference = differenceInHours($_POST["startOfShift"],$_POST["overtime"]); 
+  $hours_difference = differenceInMinutes($_POST["newStartOfShift"],$_POST["newEndOfShift"]); 
   // echo "The Difference is " . $hours_difference . " hours";
 }
 
@@ -52,23 +52,13 @@ table, td {
             </div>
         </div> 
     </div>
-<form id="formID" action="overtime_final.php" method="post">
+<form id="formID" action="changeOff.php" method="post">
 	<?php include('../errors.php'); ?>
 	<table class="table table-bordered" align="center">
 		<!-- <?php  ?> -->
 		<tr style="border: 1px solid #bb9121;">
-			
-			<!-- <th>Employee Number</th> -->
-      <!-- <th>Name</th> -->
-      <!-- <th>Request Type</th> -->
 			<th style="border: 1px solid #bb9121; color: #bb9121;">Date Filed</th>
-      <th style="border: 1px solid #bb9121; color: #bb9121;">Date</th>
-			<th colspan="2" style="text-align: center; border: 1px solid #bb9121; color: #bb9121;">Regular Shit</th>
-			<th style="border: 1px solid #bb9121; color: #bb9121;">Overtime</th>
-			<th style="border: 1px solid #bb9121; color: #bb9121;"></th>
-			<th style="border: 1px solid #bb9121; color: #bb9121;">Total Hours</th>
-			<!-- <th></th> -->
-      <th style="border: 1px solid #bb9121; color: #bb9121;">Reason</th>
+      <th style="border: 1px solid #bb9121; color: #bb9121;">Type</th>
 
 		</tr>
 		<?php 
@@ -81,29 +71,41 @@ table, td {
 				if ($result->num_rows > 0):
 		    		// output data of each row
 					while($row = $result->fetch_assoc()) {
-			    		echo '<input hidden style="text-align:center;"" type = "text"  readonly name = "employeeNumber" value="'.$row["employeeNum"].'"></input>';
+			    	echo '<input hidden style="text-align:center;"" type = "text"  readonly name = "employeeNumber" value="'.$row["employeeNum"].'"></input>';
               echo '<input hidden style="text-align:center;"" type = "text"  readonly name = "email" value="'.$row["email"].'"></input>';   
               echo '<input hidden style="text-align:center;"" type = "text"  readonly name = "department" value="'.$row["department"].'"></input>';
+              echo '<input hidden style="text-align:center;"" type = "text" readonly name = "full_name" value = "'.$row["lastname"].", ".$row["firstname"]." ".$row["middlename"].'"></input>';
               echo '<input hidden style="text-align:center;"" type = "text"  readonly name = "position" value="'.$row["position"].'"></input>';
 
-              echo '<input hidden style="text-align:center;"" type = "text" readonly name = "full_name" value = "'.$row["lastname"].", ".$row["firstname"]." ".$row["middlename"].'"></input>';
                 }
               endif;
               endif;
               ?>
-              <input hidden style="text-align:center;" type = "text" readonly name = "request_type" value = "OVERTIME"></input>
+              <input hidden style="text-align:center;" type = "text" readonly name = "request_type" value = "CHANGE OFF"></input>
 
               <?php
 
               echo '<td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" required name="dateFiled" type="date" value='.date("Y-m-d").'></input></td>';
               ?>
+              <td style="border: 1px solid #bb9121; color: #bb9121;">
+                <select>
+                  <option value="test">TEST1</option>
+                  <option value="test2">TEST2</option>
+
+                </select>
+              </input>
+            </td>
+
               <td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" required name="planDate" type="date" value="<?php if(!empty($_POST["planDate"])) { echo $_POST["planDate"]; } ?>"></input></td>
           
                 <td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" required name="startOfShift" value="<?php if(!empty($_POST["startOfShift"])) { echo $_POST["startOfShift"]; } ?>"  type="time" placeholder="Start of Regular Shift"></td>
                 
                 <td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" name="endOfShift" value="<?php if(!empty($_POST["endOfShift"])) { echo $_POST["endOfShift"]; } ?>" required=required type="time" placeholder="End of Regular Shift"></td>
+
                 
-                <td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" required name="overtime" value="<?php if(!empty($_POST["overtime"])) { echo $_POST["overtime"]; } ?>" type="time" placeholder="Start of Overtime"></td>
+                <td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" required name="newStartOfShift" value="<?php if(!empty($_POST["newStartOfShift"])) { echo $_POST["newStartOfShift"]; } ?>" type="time" placeholder="Start of Overtime"></td>
+
+                 <td style="border: 1px solid #bb9121; color: #bb9121;"><input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" required name="newEndOfShift" value="<?php if(!empty($_POST["newEndOfShift"])) { echo $_POST["newEndOfShift"]; } ?>" type="time" placeholder="Start of Overtime"></td>
 
                 
                 <!-- <td><input name="over2[id]" type="time" placeholder="End of Overtime"></td> -->
@@ -116,7 +118,7 @@ table, td {
                 </tr>
       					
       				</table>
-<button class="btn btn-outline-warning btn-lg" align="center" type="submit" name="overtime_submit" value="Submit">Submit</button>
+<button class="btn btn-outline-warning btn-lg" align="center" type="submit" name="changeOff_reg" value="Submit">Submit</button>
 
 <p><a href="../index.php">Home</a></p>
 </form>

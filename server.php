@@ -18,19 +18,7 @@ $db = mysqli_connect('localhost', 'root', 'str0ngpa$$w0rd', 'registration');
 
 
 $db1 = mysqli_connect('localhost', 'root', 'str0ngpa$$w0rd', 'registration');
-// $db2 = mysqli_connect('localhost', 'root', 'str0ngpa$$w0rd', 'practice');
-// $asd = strtoupper(string)
 
-// if (isset($_POST['form_reg'])) {
-//     $reason1 = mysqli_real_escape_string($db, $_POST['reason_1']);
-
-//     if (empty($reason1)) { array_push($errors, "Reason is required"); }
-
-//     $_SESSION['success'] = "Form Submitted";
-//     header('location: index.php');
-
-
-// }
 // REGISTER USER
 if (isset($_POST['reg_user'])) {
   // receive all input values from the form
@@ -97,18 +85,16 @@ if (isset($_POST['reg_user'])) {
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'arnazdj@gmail.com';                 // SMTP username
-    $mail->Password = 'asaness22';                           // SMTP password
+    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 587;                                    // TCP port to connect to
 
 
     $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('arnazdj@gmail.com', 'New User Registration');
-    $mail->addAddress('arnazdj@gmail.com', 'Joe User');     // 
-
-    
+    $mail->setFrom('localhost.roycehotel@gmail.com', 'New User Registration');
+    $mail->addAddress('arnazdj@gmail.com');     // HR EMail
 
     //Content
     $mail->isHTML(true);                                  // Set email format to HTML
@@ -125,21 +111,48 @@ if (isset($_POST['reg_user'])) {
 
 // ... 
     if (isset($_POST['undertime_reg'])) {
-        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
+        $date = mysqli_real_escape_string($db, strtoupper($_POST['dateFiled']));
         $emp = mysqli_real_escape_string($db, strtoupper($_POST['employeeNumber']));
-        $email = mysqli_real_escape_string($db, $_POST['email']);
-        $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_type']));
-        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
         $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
+        $position =  mysqli_real_escape_string($db, strtoupper($_POST['position']));
+        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $email =  mysqli_real_escape_string($db, $_POST['email']);
+        $planDate =  mysqli_real_escape_string($db, $_POST['planDate']);
+        $startOfShift =  mysqli_real_escape_string($db, $_POST['startOfShift']);
+        $endOfShift =  mysqli_real_escape_string($db, $_POST['endOfShift']);  
+        $undertime =  mysqli_real_escape_string($db, $_POST['undertime']);
+        $total =  mysqli_real_escape_string($db, $_POST['result']);
+        $request_type =  mysqli_real_escape_string($db, strtoupper($_POST['request_type'])); 
+        // $reason =  mysqli_real_escape_string($db, strtoupper($_POST['request_1'])); 
+        $test2 = 'PENDING';        
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
+
         // $_SESSION['employee_N'] = $employee_Number;
         if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
 
 if (count($errors) == 0) {
-        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department,email) 
-              VALUES('$reason_undertime','$fullname','$emp', '$request', '$department', '$email')";
+        $query3 = "INSERT INTO form (dateFiled,employeeNum,department,fullname,email,planDate,startOfShift,endOfShift,undertime,result,request_type,dept_approved,reason,position) 
+              VALUES('$date','$emp','$department','$fullname','$email','$planDate','$startOfShift','$endOfShift','$undertime','$total','$request_type','$test2','$reason_undertime','$position')";
     mysqli_query($db, $query3);
     // session_start();
- ;
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
     header('location: undertime.php');
 
     $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
@@ -149,16 +162,69 @@ if (count($errors) == 0) {
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'arnazdj@gmail.com';                 // SMTP username
-    $mail->Password = 'asaness22';                           // SMTP password
+    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 587;                                    // TCP port to connect to
 
 
     $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('johnanthonylabso@gmail.com', 'New User Registration');
-    $mail->addAddress('johnanthonylabso@gmail.com', 'Joe User');     // 
+    if($test == 'MARKETING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('arnazdj@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Undertime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+
+
+        // 
 
     
 
@@ -173,17 +239,37 @@ if (count($errors) == 0) {
 }
 
     if (isset($_POST['no_in_reg'])) {
-        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
+         $date = mysqli_real_escape_string($db, strtoupper($_POST['dateFiled']));
         $emp = mysqli_real_escape_string($db, strtoupper($_POST['employeeNumber']));
-        $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_type']));
-        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
         $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
-        // $_SESSION['employee_N'] = $employee_Number;
+        $position =  mysqli_real_escape_string($db, strtoupper($_POST['position']));
+        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $email =  mysqli_real_escape_string($db, $_POST['email']);
+        $planDate =  mysqli_real_escape_string($db, $_POST['planDate']);
+        $startOfShift =  mysqli_real_escape_string($db, $_POST['startOfShift']);
+        $endOfShift =  mysqli_real_escape_string($db, $_POST['endOfShift']);  
+        $no_in =  mysqli_real_escape_string($db, $_POST['no_in']);
+        $total =  mysqli_real_escape_string($db, $_POST['result']);
+        $request_type =  mysqli_real_escape_string($db, strtoupper($_POST['request_type'])); 
+        // $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_1'])); 
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
         if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
 
 if (count($errors) == 0) {
-        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department) 
-              VALUES('$reason_undertime','$fullname','$emp', '$request','$department')";
+        $query3 = "INSERT INTO form (dateFiled,employeeNum,department,fullname,email,planDate,startOfShift,endOfShift,no_in,result,request_type,dept_approved,reason,position) 
+              VALUES('$date','$emp','$department','$fullname','$email','$planDate','$startOfShift','$endOfShift','$no_in','$total','$request_type','$test2','$reason_undertime','$position')";
     mysqli_query($db, $query3);
     // session_start();
  ;
@@ -195,16 +281,66 @@ if (count($errors) == 0) {
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'arnazdj@gmail.com';                 // SMTP username
-    $mail->Password = 'asaness22';                           // SMTP password
+    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 587;                                    // TCP port to connect to
 
 
     $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('johnanthonylabso@gmail.com', 'New User Registration');
-    $mail->addAddress('johnanthonylabso@gmail.com', 'Joe User');     // 
+    if($test == 'MARKETING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('arnazdj@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }    // 
 
     
 
@@ -219,17 +355,37 @@ if (count($errors) == 0) {
 }
 
 if (isset($_POST['no_out_reg'])) {
-        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
+      $date = mysqli_real_escape_string($db, strtoupper($_POST['dateFiled']));
         $emp = mysqli_real_escape_string($db, strtoupper($_POST['employeeNumber']));
-        $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_type']));
-        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
         $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
-        // $_SESSION['employee_N'] = $employee_Number;
+        $position =  mysqli_real_escape_string($db, strtoupper($_POST['position']));
+        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $email =  mysqli_real_escape_string($db, $_POST['email']);
+        $planDate =  mysqli_real_escape_string($db, $_POST['planDate']);
+        $startOfShift =  mysqli_real_escape_string($db, $_POST['startOfShift']);
+        $endOfShift =  mysqli_real_escape_string($db, $_POST['endOfShift']);  
+        $no_out =  mysqli_real_escape_string($db, $_POST['no_out']);
+        $total =  mysqli_real_escape_string($db, $_POST['result']);
+        $request_type =  mysqli_real_escape_string($db, strtoupper($_POST['request_type'])); 
+        $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_1'])); 
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
         if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
 
 if (count($errors) == 0) {
-        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department) 
-              VALUES('$reason_undertime','$fullname','$emp', '$request','$department')";
+        $query3 = "INSERT INTO form (dateFiled,employeeNum,department,fullname,email,planDate,startOfShift,endOfShift,no_out,result,request_type,dept_approved,reason,position) 
+              VALUES('$date','$emp','$department','$fullname','$email','$planDate','$startOfShift','$endOfShift','$no_out','$total','$request_type','$test2','$reason_undertime','$position')";
     mysqli_query($db, $query3);
     // session_start();
  ;
@@ -241,16 +397,66 @@ if (count($errors) == 0) {
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'arnazdj@gmail.com';                 // SMTP username
-    $mail->Password = 'asaness22';                           // SMTP password
+    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 587;                                    // TCP port to connect to
 
 
     $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('johnanthonylabso@gmail.com', 'New User Registration');
-    $mail->addAddress('johnanthonylabso@gmail.com', 'Joe User');     // 
+    if($test == 'MARKETING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No Out Request');
+    $mail->addAddress('arnazdj@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'No Out Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }        // 
 
     
 
@@ -264,18 +470,279 @@ if (count($errors) == 0) {
     }
 }
 
-if (isset($_POST['official_business_reg'])) {
-        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
+
+if (isset($_POST['changeSchedule_reg'])) {
+      $date = mysqli_real_escape_string($db, strtoupper($_POST['dateFiled']));
         $emp = mysqli_real_escape_string($db, strtoupper($_POST['employeeNumber']));
-        $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_type']));
-        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
         $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
-        // $_SESSION['employee_N'] = $employee_Number;
+        $position =  mysqli_real_escape_string($db, strtoupper($_POST['position']));
+        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $email =  mysqli_real_escape_string($db, $_POST['email']);
+        $planDate =  mysqli_real_escape_string($db, $_POST['planDate']);
+        $startOfShift =  mysqli_real_escape_string($db, $_POST['startOfShift']);
+        $endOfShift =  mysqli_real_escape_string($db, $_POST['endOfShift']);  
+        $newStartOfShift =  mysqli_real_escape_string($db, $_POST['newStartOfShift']);
+        $newEndOfShift =  mysqli_real_escape_string($db, $_POST['newEndOfShift']);
+        $total =  mysqli_real_escape_string($db, $_POST['result']);
+        $request_type =  mysqli_real_escape_string($db, strtoupper($_POST['request_type'])); 
+        $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_1'])); 
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
         if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
 
 if (count($errors) == 0) {
-        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department) 
-              VALUES('$reason_undertime','$fullname','$emp', '$request', '$department')";
+        $query3 = "INSERT INTO form (dateFiled,employeeNum,department,fullname,email,planDate,startOfShift,endOfShift,result,request_type,dept_approved,reason,position,newStartOfShift,newEndOfShift) 
+              VALUES('$date','$emp','$department','$fullname','$email','$planDate','$startOfShift','$endOfShift','$total','$request_type','$test2','$reason_undertime','$position','$newStartOfShift','$newEndOfShift')";
+    mysqli_query($db, $query3);
+    // session_start();
+ ;
+    header('location: changeSchedule.php');
+    $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+
+    //Server settings
+    $mail->SMTPDebug = 0;                                 // Enable verbose debug output
+    $mail->isSMTP();                                      // Set mailer to use SMTP
+    $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
+    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+    $mail->Port = 587;                                    // TCP port to connect to
+
+
+    $name = $_POST['name'];
+    //Recipients
+    if($test == 'MARKETING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('arnazdj@gmail.com'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }        // 
+
+    
+
+    //Content
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->Subject = 'Change Schedule Request Submitted';
+    $mail->Body    = 'This is to inform you that one of our employee has submitted a No-Out Request <br> Please do not reply on this email.';
+    // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    $mail->send();
+    }
+}
+
+
+if (isset($_POST['changeOff_reg'])) {
+      $date = mysqli_real_escape_string($db, strtoupper($_POST['dateFiled']));
+        $emp = mysqli_real_escape_string($db, strtoupper($_POST['employeeNumber']));
+        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
+        $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
+        $position =  mysqli_real_escape_string($db, strtoupper($_POST['position']));
+        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $email =  mysqli_real_escape_string($db, $_POST['email']);
+        $planDate =  mysqli_real_escape_string($db, $_POST['planDate']);
+        $offDate =  mysqli_real_escape_string($db, $_POST['offDate']);
+        $startOfShift =  mysqli_real_escape_string($db, $_POST['startOfShift']);
+        $endOfShift =  mysqli_real_escape_string($db, $_POST['endOfShift']);  
+        $newStartOfShift =  mysqli_real_escape_string($db, $_POST['newStartOfShift']);
+        $newEndOfShift =  mysqli_real_escape_string($db, $_POST['newEndOfShift']);
+        $total =  mysqli_real_escape_string($db, $_POST['result']);
+        $request_type =  mysqli_real_escape_string($db, strtoupper($_POST['request_type'])); 
+        $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_1'])); 
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
+        if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
+
+if (count($errors) == 0) {
+        $query3 = "INSERT INTO form (dateFiled,employeeNum,department,fullname,email,planDate,startOfShift,endOfShift,result,request_type,dept_approved,reason,position,newStartOfShift,newEndOfShift,offDate) 
+              VALUES('$date','$emp','$department','$fullname','$email','$planDate','$startOfShift','$endOfShift','$total','$request_type','$test2','$reason_undertime','$position','$newStartOfShift','$newEndOfShift','$offDate')";
+    mysqli_query($db, $query3);
+    // session_start();
+ ;
+    header('location: changeOff.php');
+    $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+
+    //Server settings
+    $mail->SMTPDebug = 0;                                 // Enable verbose debug output
+    $mail->isSMTP();                                      // Set mailer to use SMTP
+    $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
+    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+    $mail->Port = 587;                                    // TCP port to connect to
+
+
+    $name = $_POST['name'];
+    //Recipients
+    if($test == 'MARKETING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('arnazdj@gmail.com'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Off Request');
+    $mail->addAddress('jamesleft123@gmail.com'); 
+    }        // 
+
+    
+
+    //Content
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->Subject = 'Change Off Request Submitted';
+    $mail->Body    = 'This is to inform you that one of our employee has submitted a Change Off Request <br> Please do not reply on this email.';
+    // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    $mail->send();
+    }
+}
+
+if (isset($_POST['official_business_reg'])) {
+         $date = mysqli_real_escape_string($db, strtoupper($_POST['dateFiled']));
+        $emp = mysqli_real_escape_string($db, strtoupper($_POST['employeeNumber']));
+        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
+        $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
+        $position =  mysqli_real_escape_string($db, strtoupper($_POST['position']));
+        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $email =  mysqli_real_escape_string($db, $_POST['email']);
+        $planDate =  mysqli_real_escape_string($db, $_POST['planDate']);
+        $startOfShift =  mysqli_real_escape_string($db, $_POST['startOfShift']);
+        $endOfShift =  mysqli_real_escape_string($db, $_POST['endOfShift']);  
+        $no_in =  mysqli_real_escape_string($db, $_POST['no_in']);
+        $no_out =  mysqli_real_escape_string($db, $_POST['no_out']);
+        $total =  mysqli_real_escape_string($db, $_POST['result']);
+        $request_type =  mysqli_real_escape_string($db, strtoupper($_POST['request_type'])); 
+        $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_1'])); 
+        $situation =  mysqli_real_escape_string($db, strtoupper($_POST['situation'])); 
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
+        if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
+
+if (count($errors) == 0) {
+        
+ $query3 = "INSERT INTO form (dateFiled,employeeNum,department,fullname,email,planDate,startOfShift,endOfShift,no_in,result,request_type,dept_approved,reason,situation,no_out,position) 
+              VALUES('$date','$emp','$department','$fullname','$email','$planDate','$startOfShift','$endOfShift','$no_in','$total','$request_type','$test2','$reason_undertime','$situation','$no_out','$position')";
+
     mysqli_query($db, $query3);
     // session_start();
  ;
@@ -287,16 +754,66 @@ if (count($errors) == 0) {
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'arnazdj@gmail.com';                 // SMTP username
-    $mail->Password = 'asaness22';                           // SMTP password
+    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 587;                                    // TCP port to connect to
 
 
     $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('johnanthonylabso@gmail.com', 'New User Registration');
-    $mail->addAddress('johnanthonylabso@gmail.com', 'Joe User');     // 
+    if($test == 'MARKETING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('localhost.roycehotel@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Official Business Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }      // 
 
     
 
@@ -312,17 +829,37 @@ if (count($errors) == 0) {
 
 
     if (isset($_POST['latetimein_reg'])) {
-        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
+        $date = mysqli_real_escape_string($db, strtoupper($_POST['dateFiled']));
         $emp = mysqli_real_escape_string($db, strtoupper($_POST['employeeNumber']));
-        $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_type']));
-        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
         $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
-        // $_SESSION['employee_N'] = $employee_Number;
+        $position =  mysqli_real_escape_string($db, strtoupper($_POST['position']));
+        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $email =  mysqli_real_escape_string($db, $_POST['email']);
+        $planDate =  mysqli_real_escape_string($db, $_POST['planDate']);
+        $startOfShift =  mysqli_real_escape_string($db, $_POST['startOfShift']);
+        $endOfShift =  mysqli_real_escape_string($db, $_POST['endOfShift']);  
+        $lateTimeIn =  mysqli_real_escape_string($db, $_POST['late_timein']);
+        $total =  mysqli_real_escape_string($db, $_POST['result']);
+        $request_type =  mysqli_real_escape_string($db, strtoupper($_POST['request_type'])); 
+        // $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_1'])); 
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
         if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
 
 if (count($errors) == 0) {
-        $query3 = "INSERT INTO form (reason,fullname , employeeNum, request_type,department) 
-              VALUES('$reason_undertime','$fullname','$emp', '$request', '$department')";
+        $query3 = "INSERT INTO form (dateFiled,employeeNum,department,fullname,email,planDate,startOfShift,endOfShift,lateTimeIn,result,request_type,dept_approved,reason,position) 
+              VALUES('$date','$emp','$department','$fullname','$email','$planDate','$startOfShift','$endOfShift','$lateTimeIn','$total','$request_type','$test2','$reason_undertime','$position')";
     mysqli_query($db, $query3);
     // session_start();
  ;
@@ -334,16 +871,66 @@ if (count($errors) == 0) {
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'arnazdj@gmail.com';                 // SMTP username
-    $mail->Password = 'asaness22';                           // SMTP password
+    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 587;                                    // TCP port to connect to
 
 
     $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('johnanthonylabso@gmail.com', 'New User Registration');
-    $mail->addAddress('johnanthonylabso@gmail.com', 'Joe User');     // 
+    if($test == 'MARKETING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('arnazdj@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Late Time In Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }       // 
 
     
 
@@ -359,23 +946,39 @@ if (count($errors) == 0) {
 
 
 if (isset($_POST['overtime_submit'])) {
-        $date = mysqli_real_escape_string($db, strtoupper($_POST['name']));
-        $start1 = mysqli_real_escape_string($db, strtoupper($_POST['shift1']));
-        $over1 =  mysqli_real_escape_string($db, strtoupper($_POST['startdate']));
-        $over2 =  mysqli_real_escape_string($db, strtoupper($_POST['enddate']));
-        $total =  mysqli_real_escape_string($db, strtoupper($_POST['result']));
+        $date = mysqli_real_escape_string($db, strtoupper($_POST['dateFiled']));
         $emp = mysqli_real_escape_string($db, strtoupper($_POST['employeeNumber']));
-        $request = mysqli_real_escape_string($db, strtoupper($_POST['request_type']));
-        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
-        $reason_overtime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
+        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
         $department =  mysqli_real_escape_string($db, strtoupper($_POST['department']));
+        $position =  mysqli_real_escape_string($db, strtoupper($_POST['position']));
+        $fullname =  mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+        $email =  mysqli_real_escape_string($db, $_POST['email']);
+        $planDate =  mysqli_real_escape_string($db, $_POST['planDate']);
+        $startOfShift =  mysqli_real_escape_string($db, $_POST['startOfShift']);
+        $endOfShift =  mysqli_real_escape_string($db, $_POST['endOfShift']);  
+        $overtime =  mysqli_real_escape_string($db, $_POST['overtime']);
+        $total =  mysqli_real_escape_string($db, $_POST['result']);
+        $request_type =  mysqli_real_escape_string($db, strtoupper($_POST['request_type'])); 
+        // $request =  mysqli_real_escape_string($db, strtoupper($_POST['request_1'])); 
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
         if (empty($total)) { array_push($errors, "Total Hours is Required! Press the = button."); }
         // $_SESSION['employee_N'] = $employee_Number;
         // if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
 
 if (count($errors) == 0) {
-        $query3 = "INSERT INTO form (employeeNum,request_type,fullname,name,shift1 , startdate, enddate, result,reason,department) 
-              VALUES('$emp','$request','$fullname','$date','$start1','$over1', '$over2','$total','$reason_overtime', '$department')";
+        $query3 = "INSERT INTO form (dateFiled,employeeNum,department,fullname,email,planDate,startOfShift,endOfShift,overtime,result,request_type,dept_approved,reason,position) 
+              VALUES('$date','$emp','$department','$fullname','$email','$planDate','$startOfShift','$endOfShift','$overtime','$total','$request_type','$test2','$reason_undertime','$position')";
 
     mysqli_query($db, $query3);
      
@@ -391,22 +994,200 @@ if (count($errors) == 0) {
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'arnazdj@gmail.com';                 // SMTP username
-    $mail->Password = 'asaness22';                           // SMTP password
+    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 587;                                    // TCP port to connect to
 
 
-    $name = $_POST['name'];
+    // $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('johnanthonylabso@gmail.com', 'New User Registration');
-    $mail->addAddress('johnanthonylabso@gmail.com', 'Joe User');     // 
+    if($test == 'MARKETING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('arnazdj@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }      // 
 
     
 
     //Content
     $mail->isHTML(true);                                  // Set email format to HTML
     $mail->Subject = 'Overtime Request Submitted';
+    $mail->Body    = 'This is to inform you that one of our employee has submitted a Overtime Request <br> Please do not reply on this email.';
+    // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    $mail->send();
+    }
+}
+
+
+if (isset($_POST['leave_submit'])) {
+        $emp = mysqli_real_escape_string($db, strtoupper($_POST['employeeNumber']));
+        $department = mysqli_real_escape_string($db, strtoupper($_POST['department']));
+        $position =  mysqli_real_escape_string($db, strtoupper($_POST['position']));
+        $reason_undertime = mysqli_real_escape_string($db, strtoupper($_POST['reason_1']));
+         $fullname = mysqli_real_escape_string($db, strtoupper($_POST['full_name']));
+         $email = mysqli_real_escape_string($db, $_POST['email']);
+         $date = mysqli_real_escape_string($db, strtoupper($_POST['dateFiled']));
+         $leaveStart = mysqli_real_escape_string($db, strtoupper($_POST['leaveStart']));
+         $leaveEnd = mysqli_real_escape_string($db, strtoupper($_POST['leaveEnd']));
+         $leaveType = mysqli_real_escape_string($db, strtoupper($_POST['leaveType']));
+         $leavePay = mysqli_real_escape_string($db, strtoupper($_POST['leavePay']));
+         $request_type =  mysqli_real_escape_string($db, strtoupper($_POST['request_type'])); 
+         $startOfShift =  mysqli_real_escape_string($db, $_POST['startOfShift']);
+        $endOfShift =  mysqli_real_escape_string($db, $_POST['endOfShift']); 
+
+        $otherSpecify =  mysqli_real_escape_string($db, $_POST['otherSpecify']); 
+        // $result_days =  mysqli_real_escape_string($db, $_POST['result_days']);
+        $result_days =  mysqli_real_escape_string($db, $_POST['result']); 
+
+        $test2 = 'PENDING';
+$employee_Number = $_SESSION['employee_N'];
+                $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+                    $price = mysqli_query($db,$user);
+                    $result = mysqli_fetch_assoc($price);
+
+                    $_SESSION['department'] = $result['department'];
+                    $test = $_SESSION['department'];
+
+                    if($test == 'HUMAN RESOURCES'){
+                        $test2 = 'APPROVED';
+                    }
+        if (empty($result_days)) { array_push($errors, "Total Hours is Required! Press the = button."); }
+        // $_SESSION['employee_N'] = $employee_Number;
+        // if (empty($reason_undertime)) { array_push($errors, "Reason is required!"); }
+
+if (count($errors) == 0) {
+        $query3 = "INSERT INTO form (employeeNum,department,fullname,email,dateFiled,leaveType,request_type,dept_approved,leaveStart,leaveEnd,startOfShift,endOfShift,leavePay,numOfDays,position,reason,otherSpecify) 
+              VALUES('$emp','$department','$fullname','$email','$date','$leaveType','$request_type','$test2','$leaveStart','$leaveEnd','$startOfShift','$endOfShift','$leavePay','$result_days','$position','$reason_undertime','$otherSpecify')";
+
+    mysqli_query($db, $query3);
+     
+    // session_start();
+    // echo "alert(\"You didn't fill all fields!\");";
+    // echo "<div><td>SUBMITTED</td></div>";
+    array_push($errors, "Leave SUBMITTED");
+    // header('location: overtime_final.php');
+    $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+
+    //Server settings
+    $mail->SMTPDebug = 0;                                 // Enable verbose debug output
+    $mail->isSMTP();                                      // Set mailer to use SMTP
+    $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
+    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+    $mail->Port = 587;                                    // TCP port to connect to
+
+
+    // $name = $_POST['name'];
+    //Recipients
+    if($test == 'MARKETING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('arnazdj@gmail.com', 'Joe User'); 
+    }
+    if($test == 'ENGINEERING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'EXECUTIVE OFFICE AND ADMIN'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FINANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'FOOD AND BEVERAGES CULLINARY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FOOD AND BEVERAGES SERVICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'FRONT OFFICE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+     if($test == 'HOUSEKEEPING'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'HUMAN RESOURCES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SALES'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SANITATION'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SECURITY'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }
+    if($test == 'SURVELLIANCE'){
+        $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Request');
+    $mail->addAddress('jamesleft123@gmail.com', 'Joe User'); 
+    }      // 
+
+    
+
+    //Content
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->Subject = 'Leave Request Submitted';
     $mail->Body    = 'This is to inform you that one of our employee has submitted a Overtime Request <br> Please do not reply on this email.';
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 

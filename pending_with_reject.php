@@ -25,7 +25,7 @@ table, td {
 </style>
 	<title></title>
 </head>
-<body>
+<body style="background-color:#fffacd;">
 <div class="half">
     <div class="container">
         <div class="row">
@@ -38,18 +38,18 @@ table, td {
 <form class="content" action="pending_with_reject.php" method="post">
  <!--     <div  class="table-responsive-sm"> -->
  <div class="formtable">
-	<table class="table table-bordered table-striped" align="center">
+	<table class="table table-bordered" align="center">
     
 		<tr>
 			<!-- <th>I.D</th> -->
-			<th>Employee Number</th>
-			<th>Email</th>
-			<th>First Name</th>
-			<th>Middle Name</th>
-			<th>Last Name</th>
-			<th>Department</th>
-			<th>Position</th>
-			<th>Status</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Employee Number</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Email</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">First Name</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Middle Name</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Last Name</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Department</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Position</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Status</th>
 		</tr>
 		<?php 
 			$conn = mysqli_connect("localhost", "root", 'str0ngpa$$w0rd', "registration");
@@ -70,6 +70,7 @@ table, td {
  
 if(isset($_POST['update']))
 {
+
   $email = $_POST['email'];
            foreach ($_POST["id"] as $id) {
             // $id = $_POST['id'];
@@ -80,26 +81,25 @@ if(isset($_POST['update']))
    
    
    $result = mysqli_query($conn, $query);
-  switch ($_POST['is_approved']) {
-    case 'APPROVED':
-      
-   $mail = new PHPMailer\PHPMailer\PHPMailer();                              // Passing `true` enables exceptions
+
+   if($approve == 'APPROVED'){
+    $mail = new PHPMailer\PHPMailer\PHPMailer();                              // Passing `true` enables exceptions
 
     //Server settings
     $mail->SMTPDebug = 0;                                 // Enable verbose debug output
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'arnazdj@gmail.com';                 // SMTP username
-    $mail->Password = 'asaness22';                           // SMTP password
+    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 587;                                    // TCP port to connect to
 
 
     // $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('arnazdj@gmail.com', 'Register Form Update');
-    $mail->addAddress($email, 'Joe User');     // 
+    $mail->setFrom('localhost.roycehotel@gmail.com', 'Register Form Update');
+    $mail->addAddress($email);     // 
 
     //Content
     $mail->isHTML(true);                                  // Set email format to HTML
@@ -108,29 +108,39 @@ if(isset($_POST['update']))
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     $mail->send();
-    // exit();
-           
-      break;
-    
-    default:
-       $sql = "DELETE  FROM user WHERE is_approved = 'REJECT'";
-   $mail = new PHPMailer\PHPMailer\PHPMailer();                              // Passing `true` enables exceptions
+           }
+   // mysql query to Update data
+   
+
+   
+   if($result)
+   {
+       echo 'Data Updated';
+   }else{
+       echo 'Data Not Updated';
+   }
+   }
+   
+
+   $sql = "DELETE  FROM user WHERE is_approved = 'REJECT'";
+   if($approve == 'REJECT'){
+    $mail = new PHPMailer\PHPMailer\PHPMailer();                              // Passing `true` enables exceptions
 
     //Server settings
     $mail->SMTPDebug = 0;                                 // Enable verbose debug output
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'arnazdj@gmail.com';                 // SMTP username
-    $mail->Password = 'asaness22';                           // SMTP password
+    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 587;                                    // TCP port to connect to
 
 
     // $name = $_POST['name'];
     //Recipients
-    $mail->setFrom('arnazdj@gmail.com', 'Register Update');
-    $mail->addAddress($email, 'Joe User');     // 
+    $mail->setFrom('localhost.roycehotel@gmail.com', 'Register Update');
+    $mail->addAddress($email);     // 
 
     //Content
     $mail->isHTML(true);                                  // Set email format to HTML
@@ -139,49 +149,34 @@ if(isset($_POST['update']))
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     $mail->send();
-      break;
+  if ($conn->query($sql) === TRUE) {
+      echo "Record deleted successfully";
+  } else {
+      echo "Error deleting record: " . $conn->error;
   }
+   }
    
-
-   // mysql query to Update data
-    
-
-   
- //   if($result)
- //   {
- //       echo 'Data Updated';
- //   }else{
- //       echo 'Data Not Updated';
- //   }
-
-  
-  
-	// if ($conn->query($sql) === TRUE) {
-	//     echo "Record deleted successfully";
-	// } else {
-	//     echo "Error deleting record: " . $conn->error;
-	// }
- //   mysqli_close($conn);
-
+   mysqli_close($conn);
+}
 
 			if ($result1-> num_rows > 0) {
 				while ($row = $result1-> fetch_assoc()){
 					echo "<tr?";
-					echo '<td><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
+					echo '<td style="border: 1px solid #bb9121; color: #bb9121;"><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
 					
-					echo '<td>'.$row["employeeNum"].'</td>';
-					echo '<td><input type = text  name = email['.$row["id"].'] type = text readonly = readonly value ="'.$row["email"].'"></input></td>';
-					echo '<td>'.$row["firstname"].'</td>';
-					echo '<td>'. $row["middlename"].'</td>';
+					echo '<td  style="border: 1px solid #bb9121; color: #bb9121;">'.$row["employeeNum"].'</td>';
+					echo '<td style="border: 1px solid #bb9121; color: #bb9121;">'.$row["email"].'</td>';
+					echo '<td style="border: 1px solid #bb9121; color: #bb9121;">'.$row["firstname"].'</td>';
+					echo '<td style="border: 1px solid #bb9121; color: #bb9121;">'. $row["middlename"].'</td>';
 
-					echo '<td>'. $row["lastname"].'</td>'; 
-					echo '<td>'.$row["department"].'</td>';
+					echo '<td style="border: 1px solid #bb9121; color: #bb9121;">'. $row["lastname"].'</td>'; 
+					echo '<td style="border: 1px solid #bb9121; color: #bb9121;">'.$row["department"].'</td>';
 
-					echo '<td>'.$row["position"].'</td>';
+					echo '<td style="border: 1px solid #bb9121; color: #bb9121;">'.$row["position"].'</td>';
 
-					echo '<td><select id = "is_approved['.$row["id"].']"   name = "is_approved['.$row["id"].']"><option value = PENDING>PENDING</option>
-          <option value = APPROVED>APPROVED</option>
-          <option value = REJECT>REJECT</OPTION>
+					echo '<td style="border: 1px solid #bb9121; color: #bb9121;"><select style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" id = "is_approved['.$row["id"].']"   name = "is_approved['.$row["id"].']"><option value = "PENDING">PENDING</option>
+          <option value = "APPROVED">APPROVED</option>
+          <option value = "REJECT">REJECT</OPTION>
           </select></td>';
 					echo "</tr>";
 				}
@@ -197,9 +192,10 @@ if(isset($_POST['update']))
 	</table>
 
  </div>
+ <input type="submit" style="background-color: #fffacd;" class="btn btn-default" name="update" value="Update Data">
+   <p><a class="loginButton" href="../index.php">Home</a></p>
 </div>
-	 <input type="submit" class="btn btn-default" name="update" value="Update Data">
-	 <p><a class="loginButton" onclick="goBack()">Back</a></p>
+	
 </form>
 </div>
 </div>

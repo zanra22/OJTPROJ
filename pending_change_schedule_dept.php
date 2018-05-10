@@ -39,10 +39,12 @@ table, td {
         
         $("#business1").show();
         $("#business2").show();
+        $("#business3").show();
       }
       else{
         $("#business1").hide();
         $("#business2").hide();
+        $("#business3").hide();
       }
 
     });
@@ -61,17 +63,19 @@ table, td {
             </div>
         </div> 
     </div>
-<form class="content" action="pending_no_out_dept.php" method="post">
+<form class="content" action="pending_change_schedule_dept.php" method="post">
    <div class="formtable">
   <table  class="table table-bordered table-striped" align="center">
     <tr>
       <!-- <th style="border: 1px solid #bb9121; color: #bb9121;">HR</th> -->
       <th style="border: 1px solid #bb9121; color: #bb9121;">Employee Number</th>
       <th style="border: 1px solid #bb9121; color: #bb9121;">Full Name</th>
+      <th style="border: 1px solid #bb9121; color: #bb9121;">Department</th>
       <th style="border: 1px solid #bb9121; color: #bb9121;">Date Filed</th>
-      <th style="border: 1px solid #bb9121; color: #bb9121;">Date</th>
+     
       <th style="border: 1px solid #bb9121; color: #bb9121;">Employee Sched</th>
-      <th style="border: 1px solid #bb9121; color: #bb9121;">Undertime</th>
+       <th style="border: 1px solid #bb9121; color: #bb9121;">Date</th>
+      <th style="border: 1px solid #bb9121; color: #bb9121;">New Schedule</th>
       <th style="border: 1px solid #bb9121; color: #bb9121;">Reason</th>
       <th style="border: 1px solid #bb9121; color: #bb9121;">Status</th>
       <th id="business1" style="display: none;">Reason Why</th>
@@ -84,7 +88,7 @@ table, td {
         die("Connection Failed:".$conn->connect_error);
       }
 
-      $sql = "SELECT * FROM form WHERE dept_approved='APPROVED' AND request_type='NO-OUT' AND is_approved = 'PENDING'";
+      $sql = "SELECT * FROM form WHERE dept_approved='APPROVED' AND request_type='CHANGE SCHEDULE' AND is_approved = 'PENDING'";
       $result1 = $conn-> query($sql);
  
 if(isset($_POST['update']))
@@ -115,12 +119,12 @@ if(isset($_POST['update']))
                     $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
                     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                     $mail->Port = 587;                                    // TCP port 
-                    $mail->setFrom('localhost.roycehotel@gmail.com', 'No-Out Form Approved');
+                    $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Form Approved');
                     $mail->addAddress($email);     // 
 
     //Content
                     $mail->isHTML(true);                                  // Set email format to HTML
-                    $mail->Subject = 'No-Out Form Update HR';
+                    $mail->Subject = 'Change Schedule Form Update HR';
                     $mail->Body    = 'Form Accepted.';
 
                     $mail->send();
@@ -136,12 +140,12 @@ if(isset($_POST['update']))
                     $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
                     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                     $mail->Port = 587;                                    // TCP port 
-                    $mail->setFrom('localhost.roycehotel@gmail.com', 'No-Out Form Rejected');
+                    $mail->setFrom('localhost.roycehotel@gmail.com', 'Change Schedule Form Rejected');
                     $mail->addAddress($email);     // 
 
     //Content
                     $mail->isHTML(true);                                  // Set email format to HTML
-                    $mail->Subject = 'No-Out Form Update HR';
+                    $mail->Subject = 'Change Schedule Form Update HR';
                     $mail->Body    = "Form Rejected <br> Reason: ".$reasonHr.".";
 
                     $mail->send();
@@ -158,17 +162,20 @@ if(isset($_POST['update']))
 
             echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["fullname"].'';
 
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["department"].'';
+
             echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["dateFiled"])).'';
 
 
-            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["planDate"])).'';
+            
 
             echo  '<td style="border: 1px solid #bb9121; color: #bb9121;">From: <br>'.date("g:i a", strtotime($row["startOfShift"])).'<br>To: <br>'. date("g:i a", strtotime($row["endOfShift"])).'</td>';
 
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["planDate"])).'';
+
             
 
-            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;"><br>
-            '. date("g:i a", strtotime($row["no_out"])).'</td>';
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;">From: <br>'.date("g:i a", strtotime($row["newStartOfShift"])).'<br>To: <br>'. date("g:i a", strtotime($row["newEndOfShift"])).'</td>';
 
             echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><textarea style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" name = reason['.$row["id"].'] type = text readonly = readonly >'. $row["reason"].'</textarea>';
 
@@ -177,7 +184,7 @@ if(isset($_POST['update']))
             echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>
             <select style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" class="purpose" id="purpose"  name = is_approved['.$row["id"].']><option value = "PENDING">PENDING</option><option value = "APPROVED">APPROVED</option><option value = "REJECT">REJECT</OPTION></select></td>';
 
-            echo  '</td><td id="business2" style="display:none;"><br><textarea sstyle="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" placeholder="Optional..." name = reasonHr['.$row["id"].'] type = text></textarea></td></tr>';
+            echo  '</td><td id="business3" style="display:none;"><br><textarea sstyle="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" placeholder="Optional..." name = reasonHr['.$row["id"].'] type = text></textarea></td></tr>';
 
             
               
@@ -205,7 +212,7 @@ if(isset($_POST['update']))
               $_SESSION['department'] = $result['department'];
               $test = $_SESSION['department'];
 
-      $sql = "SELECT * FROM form WHERE dept_approved='PENDING' AND request_type='NO-OUT' AND department = '$test'";
+      $sql = "SELECT * FROM form WHERE dept_approved='PENDING' AND request_type='CHANGE SCHEDULE' AND department = '$test'";
       $result1 = $conn-> query($sql);
  
 if(isset($_POST['update']))
@@ -285,17 +292,23 @@ $query = "UPDATE `form` SET `is_approved`='".$approve."',`reasonDept`='".$reason
 
             echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["fullname"].'';
 
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["department"].'';
+
             echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["dateFiled"])).'';
 
 
-            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["planDate"])).'';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["dateFiled"])).'';
+
+
+            
 
             echo  '<td style="border: 1px solid #bb9121; color: #bb9121;">From: <br>'.date("g:i a", strtotime($row["startOfShift"])).'<br>To: <br>'. date("g:i a", strtotime($row["endOfShift"])).'</td>';
 
-            echo '<input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" hidden required name="hrDateUpdate" type="date" value='.date("Y-m-d").'></input>';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["planDate"])).'';
 
-            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;"><br>
-            '. date("g:i a", strtotime($row["no_out"])).'</td>';
+            
+
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;">From: <br>'.date("g:i a", strtotime($row["newStartOfShift"])).'<br>To: <br>'. date("g:i a", strtotime($row["newEndOfShift"])).'</td>';
 
             echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><textarea style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" name = reason['.$row["id"].'] type = text readonly = readonly >'. $row["reason"].'</textarea>';
 

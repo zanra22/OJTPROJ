@@ -26,6 +26,15 @@ while($row=mysqli_fetch_array($result)) {
 // 	"</a>".
 // 	"</div>";
 // }
+	if($row['request_type'] == 'LEAVE APPLICATION' && $row['dept_approved'] == 'APPROVED'){
+$response .=  "<div class='notification-item'><a style='text-decoration: none;color:#bb9121;' href='ojtPending/pending_undertime_dept.php'>" .
+	"<div class='notification-subject'>". $row["employeeNum"] . "</div>" . 
+	"<div class='notification-comment'>" . $row["request_type"]  . "</div>" .
+	"</a>".
+	"</div>";
+}
+
+
 	if($row['request_type'] == 'UNDERTIME' && $row['dept_approved'] == 'APPROVED'){
 $response .=  "<div class='notification-item'><a style='text-decoration: none;color:#bb9121;' href='ojtPending/pending_undertime_dept.php'>" .
 	"<div class='notification-subject'>". $row["employeeNum"] . "</div>" . 

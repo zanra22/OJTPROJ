@@ -7,13 +7,17 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
   <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="../ojtCss/homepage.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+  <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-	<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 	<style>
 table, td {
     border: 1px solid black;
@@ -23,9 +27,31 @@ table, td {
   margin-left: 100px;
 }
 </style>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+  $(document).ready(function(){
+    $('#purpose').on('change', function() {
+      
+      if ( this.value == "REJECT")
+      {
+        
+        $("#business1").show();
+        $("#business2").show();
+      }
+      else{
+        $("#business1").hide();
+        $("#business2").hide();
+      }
+
+    });
+});
+
+</script>
 	<title></title>
 </head>
-<body>
+<body style="background-color:#fffacd;">
 <div class="half">
     <div class="container">
         <div class="row">
@@ -37,16 +63,20 @@ table, td {
     </div>
 <form class="content" action="pending_overtime_dept.php" method="post">
  <div class="formtable"> 
-	<table class="table table-bordered table-striped" align="center">
+	<table class="table table-bordered" align="center">
 		<tr>
-			<!-- <th>I.D</th> -->
-			<th>Employee Number</th>
-			<th>Request Type</th>
-			<th>Date Filed</th>
-			<th colspan="2">Regular Shift</th>
-			<th>Overtime</th>
-			<th>Total Hours</th>
-			<th>Status</th>
+			<!-- <th  style="border: 1px solid #bb9121; color: #bb9121;">I.D</th> -->
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Employee Number</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Employee Name</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Department</th>
+			<th  style="border: 1px solid #bb9121; color: #bb9121;">Date Filed</th>
+			<th  style="border: 1px solid #bb9121; color: #bb9121;">Date</th>
+			<th  style="border: 1px solid #bb9121; color: #bb9121;">Regular Shift</th>
+			<th  style="border: 1px solid #bb9121; color: #bb9121;">Overtime</th>
+			<th  style="border: 1px solid #bb9121; color: #bb9121;">Total Minutes</th>
+			<th  style="border: 1px solid #bb9121; color: #bb9121;">Employee`s Reason</th>
+			<th  style="border: 1px solid #bb9121; color: #bb9121;">Status</th>
+			<th id="business1" style="display: none;">Reason Why</th>
 		</tr>
 		<?php 
 
@@ -63,72 +93,104 @@ table, td {
       				$_SESSION['department'] = $result['department'];
       				$test = $_SESSION['department'];
 
-			$sql = "SELECT employeeNum,request_type,id, name, shift1, dept_approved, startdate, enddate, result FROM  form WHERE dept_approved='APPROVED' AND request_type='OVERTIME'";
+			$sql = "SELECT * FROM  form WHERE dept_approved='APPROVED' AND request_type='OVERTIME' AND is_approved = 'PENDING'";
 			$result1 = $conn-> query($sql);
  
 if(isset($_POST['update']))
 {
 
-			// $id = $_POST['id'];
-
-   			// $fname = $_POST['fullname'];
-   			// $mname = $_POST['request_type'];
-   			// $lname = $_POST['reason'];
-   			$approve = $_POST['is_approved'];
-
-           
+			 $email = $_POST['email'];
+   $reasonHr = $_POST['reasonHr'];
+   $approve = $_POST['is_approved'];
+   $hrDateUpdate =$_POST['hrDateUpdate'];
       foreach ($_POST["id"] as $id ) {
-      	// $id = $_POST['id'];
-   			// $fname = mysqli_real_escape_string($conn,$_POST["fullname"][$id]);
-   			// $rtype = mysqli_real_escape_string($conn,$_POST["request_type"][$id]);
-   			// $reason = mysqli_real_escape_string($conn,$_POST["reason"][$id]);
-   			$approve = mysqli_real_escape_string($conn,$_POST["is_approved"][$id]);
+        $approve = mysqli_real_escape_string($conn,$_POST["is_approved"][$id]);
+        $reasonHr = mysqli_real_escape_string($conn,strtoupper($_POST["reasonHr"][$id]));
+        $email = mysqli_real_escape_string($conn,$_POST["email"][$id]);
+        $hrDateUpdate = mysqli_real_escape_string($conn, strtoupper($_POST['hrDateUpdate']));
 
 
-   			$query = "UPDATE `form` SET `is_approved`='".$approve."' WHERE `id` = $id LIMIT 1";
+        $query = "UPDATE `form` SET `is_approved`='".$approve."',`reasonHr`='".$reasonHr."',`hrDateUpdate`='".$hrDateUpdate."'  WHERE `id` = $id LIMIT 1";
+
    
    
-   			$result = mysqli_query($conn, $query);
-      			}
-   // mysql query to Update data
-   
+        $result = mysqli_query($conn, $query);
+            if($approve == 'APPROVED'){
+                    $mail = new PHPMailer\PHPMailer\PHPMailer();  
+                    $mail->SMTPDebug = 0;                                 // Enable verbose debug output
+                    $mail->isSMTP();                                      // Set mailer to use SMTP
+                    $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+                    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+                    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+                    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
+                    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+                    $mail->Port = 587;                                    // TCP port 
+                    $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Form Approved');
+                    $mail->addAddress($email, 'Joe User');     // 
 
+    //Content
+                    $mail->isHTML(true);                                  // Set email format to HTML
+                    $mail->Subject = 'Overtime Form Update HR';
+                    $mail->Body    = 'Form Accepted.';
 
- //   $sql = "DELETE  FROM form WHERE is_approved = 'REJECT'";
+                    $mail->send();
+            }
 
-	// if ($conn->query($sql) === TRUE) {
-	//     echo "Record deleted successfully";
-	// } else {
-	//     echo "Error deleting record: " . $conn->error;
-	// }
- //   if($result)
- //   {
- //       echo 'Data Updated';
- //   }else{
- //       echo 'Data Not Updated';
- //   }
- //   mysqli_close($conn);
+            if($approve == 'REJECT'){
+                    $mail = new PHPMailer\PHPMailer\PHPMailer();  
+                    $mail->SMTPDebug = 0;                                 // Enable verbose debug output
+                    $mail->isSMTP();                                      // Set mailer to use SMTP
+                    $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+                    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+                    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+                    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
+                    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+                    $mail->Port = 587;                                    // TCP port 
+                    $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Form Rejected');
+                    $mail->addAddress($email);     // 
+
+    //Content
+                    $mail->isHTML(true);                                  // Set email format to HTML
+                    $mail->Subject = 'Overtime Form Update HR';
+                    $mail->Body    = "Form Rejected <br> Reason: ".$reasonHr.".";
+
+                    $mail->send();
+            }
+       }
 }
 
 			if ($result1-> num_rows > 0) {
 				while ($row = $result1-> fetch_assoc()){
 					echo '<tr><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
+          echo '<input type = hidden  name = email['.$row["id"].'] type = text readonly = readonly value ="'.$row["email"].'"></input>';
 
-					echo '</td><td>'.$row["employeeNum"].'';
+					echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["employeeNum"].'';
 
-						echo '</td><td><input name = request_type['.$row["id"].'] type = text readonly = readonly value ="'.$row["request_type"].'"></input>';
+						echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["fullname"].'';
+						echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["department"].'';
 
-						echo '</td><td><input name = name['.$row["id"].'] type = text readonly = readonly value="'. $row["name"].'"></input></td>';
-						// echo date("g:i a", strtotime("$row[startdate]"));
-						echo	'<td><input name = shift1['.$row["id"].'] type = text readonly=readonly value = "'.date("g:i a", strtotime($row["shift1"])).'"></input></td>';
+						echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["dateFiled"])).'';
 
-						echo	'<td><input name = shift2['.$row["id"].'] type = text readonly=readonly value = "'. date("g:i a", strtotime($row["startdate"])).'"></input></td>';
 
-						echo	'<td><input name = overtime1['.$row["id"].'] type = text readonly=readonly value = "'. date("g:i a", strtotime($row["enddate"])).'"></input></td>';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["planDate"])).'';
 
-						echo	'<td><input name = reason['.$row["id"].'] type = text readonly=readonly value = "'. $row["result"].'"></input></td>';
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;">From: <br>'.date("g:i a", strtotime($row["startOfShift"])).'<br>To: <br>'. date("g:i a", strtotime($row["endOfShift"])).'</td>';
 
-						echo '</td><td><select  name = is_approved['.$row["id"].']><option value = PENDING>PENDING</option><option value = APPROVED>APPROVED</option><option value = REJECT>REJECT</OPTION></select></td></tr>';
+            
+
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;"><br>
+            '. date("g:i a", strtotime($row["overtime"])).'</td>';
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;"><br>
+            '. $row["result"].'</td>';
+
+						echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><textarea style="border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" name = reason['.$row["id"].'] type = text readonly = readonly >'. $row["reason"].'</textarea>';
+
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>
+            <select style="border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" class="purpose" id="purpose"  name = is_approved['.$row["id"].']><option value = "PENDING">PENDING</option><option value = "APPROVED">APPROVED</option><option value = "REJECT">REJECT</OPTION></select></td>';
+
+            echo '<input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" hidden required name="hrDateUpdate" type="date" value='.date("Y-m-d").'></input>';
+
+						echo	'</td><td id="business2" style="display:none;"><br><textarea style="height: 30px;width:150px;" placeholder="Optional..." name = reasonHr['.$row["id"].'] type = text></textarea></td></tr>';
 				}
 				echo "</table>";
 			}
@@ -156,69 +218,99 @@ if(isset($_POST['update']))
 if(isset($_POST['update']))
 {
 
-			// $id = $_POST['id'];
+   
 
-   			// $fname = $_POST['fullname'];
-   			// $mname = $_POST['request_type'];
-   			// $lname = $_POST['reason'];
-			$email = $_POST['email'];
-   			$approve = $_POST['dept_approved'];
+$email = $_POST['email'];
+      $reasonDept = $_POST['reasonDept'];
+      $approve = $_POST['deptApproved'];
+      $deptDateUpdate =$_POST['deptDateUpdate'];
 
            
       foreach ($_POST["id"] as $id ) {
-      	// $id = $_POST['id'];
-   			// $fname = mysqli_real_escape_string($conn,$_POST["fullname"][$id]);
-   			// $rtype = mysqli_real_escape_string($conn,$_POST["request_type"][$id]);
-   			// $reason = mysqli_real_escape_string($conn,$_POST["reason"][$id]);
-   			$approve = mysqli_real_escape_string($conn,$_POST["dept_approved"][$id]);
-   			$email = mysqli_real_escape_string($conn,$_POST["email"][$id]);
+        $approve = mysqli_real_escape_string($conn,$_POST["deptApproved"][$id]);
+        $reasonDept = mysqli_real_escape_string($conn,strtoupper($_POST["reasonDept"][$id]));
+        $email = mysqli_real_escape_string($conn,$_POST["email"][$id]);
+        $deptDateUpdate = mysqli_real_escape_string($conn, strtoupper($_POST['deptDateUpdate']));
 
 
-   			$query = "UPDATE `form` SET `dept_approved`='".$approve."' WHERE `id` = $id LIMIT 1";
+$query = "UPDATE `form` SET `is_approved`='".$approve."',`reasonDept`='".$reasonDept."',`deptDateUpdate`='".$deptDateUpdate."'  WHERE `id` = $id LIMIT 1";  
    
    
-   			$result = mysqli_query($conn, $query);
-      			}
-   // mysql query to Update data
-   
+        $result = mysqli_query($conn, $query);
+            if($approve == 'APPROVED'){
+                    $mail = new PHPMailer\PHPMailer\PHPMailer();  
+                    $mail->SMTPDebug = 0;                                 // Enable verbose debug output
+                    $mail->isSMTP();                                      // Set mailer to use SMTP
+                    $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+                    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+                    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+                    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
+                    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+                    $mail->Port = 587;                                    // TCP port 
+                    $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Form Approved');
+                    $mail->addAddress($email);     // 
 
+    //Content
+                    $mail->isHTML(true);                                  // Set email format to HTML
+                    $mail->Subject = 'Overtime Form Update HR';
+                    $mail->Body    = 'Form Accepted.';
 
- //   $sql = "DELETE  FROM form WHERE is_approved = 'REJECT'";
+                    $mail->send();
+            }
 
-	// if ($conn->query($sql) === TRUE) {
-	//     echo "Record deleted successfully";
-	// } else {
-	//     echo "Error deleting record: " . $conn->error;
-	// }
- //   if($result)
- //   {
- //       echo 'Data Updated';
- //   }else{
- //       echo 'Data Not Updated';
- //   }
- //   mysqli_close($conn);
+            if($approve == 'REJECT'){
+                    $mail = new PHPMailer\PHPMailer\PHPMailer();  
+                    $mail->SMTPDebug = 0;                                 // Enable verbose debug output
+                    $mail->isSMTP();                                      // Set mailer to use SMTP
+                    $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+                    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+                    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+                    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
+                    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+                    $mail->Port = 587;                                    // TCP port 
+                    $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Form Rejected');
+                    $mail->addAddress($email);     // 
+
+    //Content
+                    $mail->isHTML(true);                                  // Set email format to HTML
+                    $mail->Subject = 'Overtime Form Update HR';
+                    $mail->Body    = "Form Rejected <br> Reason: ".$reasonDept.".";
+
+                    $mail->send();
+            }
+      }
 }
 
 			if ($result1-> num_rows > 0) {
 				while ($row = $result1-> fetch_assoc()){
 					echo '<tr><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
+          echo '<input type = hidden  name = email['.$row["id"].'] type = text readonly = readonly value ="'.$row["email"].'"></input>';
 
-					echo '</td><td>'.$row["employeeNum"].'';
+          echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["employeeNum"].'';
 
-						echo '</td><td><input name = request_type['.$row["id"].'] type = text readonly = readonly value ="'.$row["request_type"].'"></input>';
-						echo '</td><td><input hidden name = email['.$row["id"].'] type = text readonly = readonly value ="'.$row["email"].'"></input>';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["fullname"].'';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["department"].'';
 
-						echo '</td><td><input name = name['.$row["id"].'] type = text readonly = readonly value="'. $row["name"].'"></input></td>';
-						// echo date("g:i a", strtotime("$row[startdate]"));
-						echo	'<td><input name = shift1['.$row["id"].'] type = text readonly=readonly value = "'.date("g:i a", strtotime($row["shift1"])).'"></input></td>';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["dateFiled"])).'';
 
-						echo	'<td><input name = shift2['.$row["id"].'] type = text readonly=readonly value = "'. date("g:i a", strtotime($row["startdate"])).'"></input></td>';
 
-						echo	'<td><input name = overtime1['.$row["id"].'] type = text readonly=readonly value = "'. date("g:i a", strtotime($row["enddate"])).'"></input></td>';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["planDate"])).'';
 
-						echo	'<td><input name = reason['.$row["id"].'] type = text readonly=readonly value = "'. $row["result"].'"></input></td>';
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;">From: <br>'.date("g:i a", strtotime($row["startOfShift"])).'<br>To: <br>'. date("g:i a", strtotime($row["endOfShift"])).'</td>';
 
-						echo '</td><td><select  name = dept_approved['.$row["id"].']><option value = PENDING>PENDING</option><option value = APPROVED>APPROVED</option><option value = REJECT>REJECT</OPTION></select></td></tr>';
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;"><br>
+            '. date("g:i a", strtotime($row["overtime"])).'</td>';
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;"><br>
+            '. $row["result"].'</td>';
+
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><textarea style="border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" name = reason['.$row["id"].'] type = text readonly = readonly >'. $row["reason"].'</textarea>';
+
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>
+            <select style="border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" class="purpose" id="purpose"  name = dept_approved['.$row["id"].']><option value = "PENDING">PENDING</option><option value = "APPROVED">APPROVED</option><option value = "REJECT">REJECT</OPTION></select></td>';
+
+            echo '<input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" hidden required name="hrDateUpdate" type="date" value='.date("Y-m-d").'></input>';
+
+            echo  '</td><td id="business2" style="display:none;"><br><textarea style="height: 30px;width:150px;" placeholder="Optional..." name = reasonDept['.$row["id"].'] type = text></textarea></td></tr>';
 				}
 				echo "</table>";
 			}
@@ -226,15 +318,135 @@ if(isset($_POST['update']))
 				echo "0 result";
 			}
 
-		}
+			}
 
+
+
+      if($_SESSION['type'] == 'gm') {
+      $conn = mysqli_connect("localhost", "root", 'str0ngpa$$w0rd', "registration");
+      if ($conn-> connect_error) {
+        die("Connection Failed:".$conn->connect_error);
+      }
+      $employee_Number = $_SESSION['employee_N'];
+            $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+              $price = mysqli_query($db,$user);
+              $result = mysqli_fetch_assoc($price);
+
+              $_SESSION['department'] = $result['department'];
+              $test = $_SESSION['department'];
+
+      $sql = "SELECT * FROM  form WHERE dept_approved='APPROVED' AND request_type='OVERTIME' AND is_approved = 'PENDING' AND position = 'HR MANAGER' OR position = 'EXECUTIVE SOUS CHEF' OR position = 'CHEF DE PARTIE' OR position = 'ASSISTANT BANQUET MANAGER' OR position = 'ASSISTANT OUTLET MANAGER' OR position = 'DEMI CHEF'";
+      $result1 = $conn-> query($sql);
+ 
+if(isset($_POST['update']))
+{
+
+       $email = $_POST['email'];
+   $reasonHr = $_POST['reasonHr'];
+   $approve = $_POST['is_approved'];
+   $hrDateUpdate =$_POST['hrDateUpdate'];
+      foreach ($_POST["id"] as $id ) {
+        $approve = mysqli_real_escape_string($conn,$_POST["is_approved"][$id]);
+        $reasonHr = mysqli_real_escape_string($conn,strtoupper($_POST["reasonHr"][$id]));
+        $email = mysqli_real_escape_string($conn,$_POST["email"][$id]);
+        $hrDateUpdate = mysqli_real_escape_string($conn, strtoupper($_POST['hrDateUpdate']));
+
+
+        $query = "UPDATE `form` SET `is_approved`='".$approve."',`reasonHr`='".$reasonHr."',`hrDateUpdate`='".$hrDateUpdate."'  WHERE `id` = $id LIMIT 1";
+
+   
+   
+        $result = mysqli_query($conn, $query);
+            if($approve == 'APPROVED'){
+                    $mail = new PHPMailer\PHPMailer\PHPMailer();  
+                    $mail->SMTPDebug = 0;                                 // Enable verbose debug output
+                    $mail->isSMTP();                                      // Set mailer to use SMTP
+                    $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+                    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+                    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+                    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
+                    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+                    $mail->Port = 587;                                    // TCP port 
+                    $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Form Approved');
+                    $mail->addAddress($email, 'Joe User');     // 
+
+    //Content
+                    $mail->isHTML(true);                                  // Set email format to HTML
+                    $mail->Subject = 'Overtime Form Update HR';
+                    $mail->Body    = 'Form Accepted.';
+
+                    $mail->send();
+            }
+
+            if($approve == 'REJECT'){
+                    $mail = new PHPMailer\PHPMailer\PHPMailer();  
+                    $mail->SMTPDebug = 0;                                 // Enable verbose debug output
+                    $mail->isSMTP();                                      // Set mailer to use SMTP
+                    $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+                    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+                    $mail->Username = 'localhost.roycehotel@gmail.com';                 // SMTP username
+                    $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
+                    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+                    $mail->Port = 587;                                    // TCP port 
+                    $mail->setFrom('localhost.roycehotel@gmail.com', 'Overtime Form Rejected');
+                    $mail->addAddress($email);     // 
+
+    //Content
+                    $mail->isHTML(true);                                  // Set email format to HTML
+                    $mail->Subject = 'Overtime Form Update HR';
+                    $mail->Body    = "Form Rejected <br> Reason: ".$reasonHr.".";
+
+                    $mail->send();
+            }
+       }
+}
+
+      if ($result1-> num_rows > 0) {
+        while ($row = $result1-> fetch_assoc()){
+          echo '<tr><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
+          echo '<input type = hidden  name = email['.$row["id"].'] type = text readonly = readonly value ="'.$row["email"].'"></input>';
+
+          echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["employeeNum"].'';
+
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["fullname"].'';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["department"].'';
+
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["dateFiled"])).'';
+
+
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["planDate"])).'';
+
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;">From: <br>'.date("g:i a", strtotime($row["startOfShift"])).'<br>To: <br>'. date("g:i a", strtotime($row["endOfShift"])).'</td>';
+
+            
+
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;"><br>
+            '. date("g:i a", strtotime($row["overtime"])).'</td>';
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;"><br>
+            '. $row["result"].'</td>';
+
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><textarea style="border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" name = reason['.$row["id"].'] type = text readonly = readonly >'. $row["reason"].'</textarea>';
+
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>
+            <select style="border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" class="purpose" id="purpose"  name = is_approved['.$row["id"].']><option value = "PENDING">PENDING</option><option value = "APPROVED">APPROVED</option><option value = "REJECT">REJECT</OPTION></select></td>';
+
+            echo '<input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" hidden required name="hrDateUpdate" type="date" value='.date("Y-m-d").'></input>';
+
+            echo  '</td><td id="business2" style="display:none;"><br><textarea style="height: 30px;width:150px;" placeholder="Optional..." name = reasonHr['.$row["id"].'] type = text></textarea></td></tr>';
+        }
+        echo "</table>";
+      }
+      else{
+        echo "0 result";
+      }
+    }
 			
 		?>
 
 	</table>
 </div> 
-	 <input type="submit" class="btn btn-default" name="update" value="Update Data">
-	 <p><a class="loginButton" onclick="goBack()">Back</a></p>
+	 <input type="submit" style="background-color:#fffacd;" class="btn btn-default" name="update" value="Update Data">
+	 <p><a class="loginButton" href="../index.php">Home</a></p>
 </form>
 </div>
 </div>

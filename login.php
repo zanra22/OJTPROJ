@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sign-Up/Login Form</title>
+  <title>Royce Hotel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
@@ -15,7 +15,7 @@
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
   <script>
   function getPosition(val){
     $.ajax({
@@ -35,13 +35,16 @@
   <div class="form">
       
       <ul class="tab-group col-s-6">
-        <li class="tab active"><a href="#signup">Sign Up</a></li>
+        <li class="tab active"><a href="#signup">Register</a></li>
         <li class="tab"><a href="#login">Log In</a></li>
       </ul>
       
       <div class="tab-content">
         <div id="signup">   
-          <h1>Sign Up for a Free</h1>
+          <p class="item-1">Hi, Welcome!</p>
+          <p class="item-2">Hi, Welcome!</p>
+          <p class="item-3">Hi, Welcome!</p>
+          <br><br><br><br>
           
           <form class="col-s-6" action="login.php" method="post">
           <?php include('errors.php'); ?>
@@ -107,10 +110,10 @@
                 Position<span class="req">*</span>
               </label>
                 <select id="position-list" name="position">
-        <option value="<?php echo $rs["position"]; ?>"><?php
-        echo $rs["position"] ?></option>
-        </select>
-          </div>
+                <option value="<?php echo $rs["position"]; ?>"><?php
+                echo $rs["position"] ?></option>
+              </select>
+              </div>
           </div>
 
 
@@ -161,7 +164,7 @@
             <input name="password" type="password" autocomplete="off"/>
           </div>
           
-          <p class="forgot"><a href="#">Forgot Password?</a></p>
+          <!-- <p class="forgot"><a href="#">Forgot Password?</a></p> -->
           
           <button name="login_user" class="button button-block"/>Log In</button>
           

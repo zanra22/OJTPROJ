@@ -22,7 +22,7 @@
 }
 
 body {
-  background:url(../front.png);
+  background:url(../img/back5.jpg);
   font-family: 'Titillium Web', sans-serif;
   background-size:cover;
   height: 100%;
@@ -49,7 +49,7 @@ a:hover {
 }
 
 .form {
-  background:rgba(255,255,255,0.6);
+  background:rgba(245, 245, 220,0.7);
   padding: 40px;
   max-width: 600px;
   margin: 40px auto;
@@ -59,7 +59,7 @@ a:hover {
 }
 
 .form:hover {
-	box-shadow: 0px 0px 40px 16px rgba(18,18,18,1.00);
+	box-shadow: 0px 0px 40px 16px rgba(153,101,21,1.00);
 	}
 
 .tab-group {
@@ -76,8 +76,8 @@ a:hover {
   display: block;
   text-decoration: none;
   padding: 15px;
-  background: #000;
-  color: #fff;
+  /*background: #000;*/
+  color: #CFB53B;
   font-size: 20px;
   float: left;
   width: 50%;
@@ -86,11 +86,11 @@ a:hover {
   transition: .5s ease;
 }
 .tab-group li a:hover {
-  background: #ffc107;
+  background: #CFB53B;
   color: #ffffff;
 }
 .tab-group .active a {
-  background: #ffc107;
+  background: #CFB53B;
   color: #ffffff;
 }
 
@@ -107,8 +107,8 @@ h1 {
 
 label {
   position: absolute;
-  transform: translateY(6px);
-  left: 13px;
+  transform: translateY(4px);
+  left: 12px;
   /*color: rgba(255,255,255,0.7);*/
   transition: all 0.25s ease;
   pointer-events: none;
@@ -120,7 +120,7 @@ label .req {
 }
 
 label.active {
-  transform: translateY(50px);
+  transform: translateY(-18px);
   left: 2px;
   font-size: 14px;
 }
@@ -141,7 +141,7 @@ input {
   padding: 5px 10px;
   background: none;
   background-image: none;
-  border: 1px solid #ffc107;
+  border: 1px solid #CFB53B;
   /*color: #fff;*/
   border-radius: 0;
   transition: border-color .25s ease, box-shadow .25s ease;
@@ -196,7 +196,7 @@ input:focus{
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: .1em;
-  background: #ffc107;
+  background: #CFB53B;
   color: #ffffff;
   transition: all 0.5s ease;
 }
@@ -213,4 +213,55 @@ input:focus{
   margin-top: -20px;
   text-align: right;
   margin-bottom:10px;
+}
+
+
+/*slideshow header*/
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:600);
+
+.item-1, 
+.item-2, 
+.item-3 {
+  position: absolute;
+  display: block;
+  text-align: center;
+  /*top: 2em;*/
+  
+  width: 50%;
+  
+  font-size: 30px;
+
+  animation-duration: 15s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.item-1{
+  animation-name: anim-1;
+}
+
+.item-2{
+  animation-name: anim-2;
+}
+
+.item-3{
+  animation-name: anim-3;
+}
+
+@keyframes anim-1 {
+  0%, 8.3% { left: -30%; opacity: 0; }
+  8.3%,25% { left: 25%; opacity: 1; }
+  33.33%, 100% { left: 40%; opacity: 0; }
+}
+
+@keyframes anim-2 {
+  0%, 33.33% { left: 30%; opacity: 0; }
+  41.63%, 58.29% { left: 25%; opacity: 1; }
+  66.66%, 100% { left: -40%; opacity: 0; }
+}
+
+@keyframes anim-3 {
+  0%, 66.66% { left: -30%; opacity: 0; }
+  74.96%, 91.62% { left: 25%; opacity: 1; }
+  100% { left: 40%; opacity: 0; }
 }

@@ -6,7 +6,7 @@ include('../server.php');
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="../ojtCss/homepage.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
@@ -17,8 +17,7 @@ include('../server.php');
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-  <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
-  <style>
+	<style>
 table, td {
     border: 1px solid black;
 }
@@ -27,7 +26,6 @@ table, td {
   margin-left: 100px;
 }
 </style>
-
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
 </script>
 <script>
@@ -37,19 +35,22 @@ table, td {
       if ( this.value == "REJECT")
       {
         
-        $("#business1").show();
+        $("#business3").show();
         $("#business2").show();
+        $("#business4").show();
       }
       else{
-        $("#business1").hide();
+        $("#business3").hide();
         $("#business2").hide();
+        $("#business4").hide();
+
       }
 
     });
 });
 
 </script>
-  <title></title>
+	<title></title>
 </head>
 <body style="background-color:#fffacd;">
 <div class="half">
@@ -61,36 +62,38 @@ table, td {
             </div>
         </div> 
     </div>
-<form class="content" action="pending_no_out_dept.php" method="post">
+<form class="content" action="pending_leave_forms_dept.php" method="post">
    <div class="formtable">
-  <table  class="table table-bordered table-striped" align="center">
-    <tr>
-      <!-- <th style="border: 1px solid #bb9121; color: #bb9121;">HR</th> -->
-      <th style="border: 1px solid #bb9121; color: #bb9121;">Employee Number</th>
-      <th style="border: 1px solid #bb9121; color: #bb9121;">Full Name</th>
-      <th style="border: 1px solid #bb9121; color: #bb9121;">Date Filed</th>
-      <th style="border: 1px solid #bb9121; color: #bb9121;">Date</th>
+	<table  class="table table-bordered" align="center">
+		<tr>
+			<!-- <th style="border: 1px solid #bb9121; color: #bb9121;">HR</th> -->
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Employee Number</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Full Name</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Date Filed</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Leave Date</th>
       <th style="border: 1px solid #bb9121; color: #bb9121;">Employee Sched</th>
-      <th style="border: 1px solid #bb9121; color: #bb9121;">Undertime</th>
-      <th style="border: 1px solid #bb9121; color: #bb9121;">Reason</th>
-      <th style="border: 1px solid #bb9121; color: #bb9121;">Status</th>
-      <th id="business1" style="display: none;">Reason Why</th>
-        <!-- <?php echo $_SESSION['type']; ?></th> -->
-    </tr>
-    <?php 
-    if($_SESSION['type'] == 'HR'){
-      $conn = mysqli_connect("localhost", "root", 'str0ngpa$$w0rd', "registration");
-      if ($conn-> connect_error) {
-        die("Connection Failed:".$conn->connect_error);
-      }
+      <th style="border: 1px solid #bb9121; color: #bb9121;">Leave Type</th>
+      <th style="border: 1px solid #bb9121; color: #bb9121;">With/Without Pay</th>
+      <th style="border: 1px solid #bb9121; color: #bb9121;">Employee`s Reason</th>
+			<th style="border: 1px solid #bb9121; color: #bb9121;">Status</th>
+      <th id="business3" style="display: none;border: 1px solid #bb9121; color: #bb9121;" >Reason Why</th>
+				<!-- <?php echo $_SESSION['type']; ?></th> -->
+		</tr>
+		<?php 
+		if($_SESSION['type'] == 'HR'){
+			$conn = mysqli_connect("localhost", "root", 'str0ngpa$$w0rd', "registration");
+			if ($conn-> connect_error) {
+				die("Connection Failed:".$conn->connect_error);
+			}
 
-      $sql = "SELECT * FROM form WHERE dept_approved='APPROVED' AND request_type='NO-OUT' AND is_approved = 'PENDING'";
-      $result1 = $conn-> query($sql);
- 
+			$sql = "SELECT * FROM form WHERE dept_approved='APPROVED' AND request_type='LEAVE APPLICATION' AND is_approved = 'PENDING'";
+			$result1 = $conn-> query($sql);
+ // $fullname = $result1['fullname'];
 if(isset($_POST['update']))
 {
 
-   $email = $_POST['email'];
+   			
+    $email = $_POST['email'];
    $reasonHr = $_POST['reasonHr'];
    $approve = $_POST['is_approved'];
    $hrDateUpdate =$_POST['hrDateUpdate'];
@@ -102,10 +105,12 @@ if(isset($_POST['update']))
 
 
         $query = "UPDATE `form` SET `is_approved`='".$approve."',`reasonHr`='".$reasonHr."',`hrDateUpdate`='".$hrDateUpdate."'  WHERE `id` = $id LIMIT 1";
+
    
    
-        $result = mysqli_query($conn, $query);
-            if($approve == 'APPROVED'){
+   $result = mysqli_query($conn, $query);
+   
+    if($approve == 'APPROVED'){
                     $mail = new PHPMailer\PHPMailer\PHPMailer();  
                     $mail->SMTPDebug = 0;                                 // Enable verbose debug output
                     $mail->isSMTP();                                      // Set mailer to use SMTP
@@ -115,12 +120,12 @@ if(isset($_POST['update']))
                     $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
                     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                     $mail->Port = 587;                                    // TCP port 
-                    $mail->setFrom('localhost.roycehotel@gmail.com', 'No-Out Form Approved');
+                    $mail->setFrom('localhost.roycehotel@gmail.com', 'Leave Form Approved');
                     $mail->addAddress($email);     // 
 
     //Content
                     $mail->isHTML(true);                                  // Set email format to HTML
-                    $mail->Subject = 'No-Out Form Update HR';
+                    $mail->Subject = 'Leave Form Update HR';
                     $mail->Body    = 'Form Accepted.';
 
                     $mail->send();
@@ -136,12 +141,12 @@ if(isset($_POST['update']))
                     $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
                     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                     $mail->Port = 587;                                    // TCP port 
-                    $mail->setFrom('localhost.roycehotel@gmail.com', 'No-Out Form Rejected');
+                    $mail->setFrom('localhost.roycehotel@gmail.com', 'Leave Form Rejected');
                     $mail->addAddress($email);     // 
 
     //Content
                     $mail->isHTML(true);                                  // Set email format to HTML
-                    $mail->Subject = 'No-Out Form Update HR';
+                    $mail->Subject = 'Leave Form Update HR';
                     $mail->Body    = "Form Rejected <br> Reason: ".$reasonHr.".";
 
                     $mail->send();
@@ -149,68 +154,65 @@ if(isset($_POST['update']))
       }
 }
 
-      if ($result1-> num_rows > 0) {
-        while ($row = $result1-> fetch_assoc()){
-          echo '<tr><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
+			if ($result1-> num_rows > 0) {
+				while ($row = $result1-> fetch_assoc()){
+					echo '<tr><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
           echo '<input type = hidden  name = email['.$row["id"].'] type = text readonly = readonly value ="'.$row["email"].'"></input>';
 
-          echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["employeeNum"].'';
+          echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br>'.$row["employeeNum"].'';
 
-            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["fullname"].'';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br>'.$row["fullname"].'';
 
-            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["dateFiled"])).'';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br>'.date("M d, Y , l",strtotime($row["dateFiled"])).'';
 
 
-            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["planDate"])).'';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;">From: <br>'.date("M d, Y , l",strtotime($row["leaveStart"])).'<br>To: <br>'.date("M d, Y , l",strtotime($row["leaveEnd"])).'';
 
-            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;">From: <br>'.date("g:i a", strtotime($row["startOfShift"])).'<br>To: <br>'. date("g:i a", strtotime($row["endOfShift"])).'</td>';
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;">From: <br>'.date("g:i a", strtotime($row["startOfShift"])).'<br>To: <br>'. date("g:i a", strtotime($row["endOfShift"])).'</td>';
 
             
+echo '<input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" hidden required name="hrDateUpdate" type="date" value='.date("Y-m-d").'></input>';
 
-            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;"><br>
-            '. date("g:i a", strtotime($row["no_out"])).'</td>';
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br>'.$row["leaveType"].': <strong>'.$row["otherSpecify"].'</strong></td>';
 
-            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><textarea style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" name = reason['.$row["id"].'] type = text readonly = readonly >'. $row["reason"].'</textarea>';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br>'. $row["leavePay"].'';
+            echo '<td style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;"><br><textarea style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" readonly type = text>'.$row["reason"].'</textarea>';
 
-            echo '<input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" hidden required name="hrDateUpdate" type="date" value='.date("Y-m-d").'></input>';
-
-            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br>
             <select style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" class="purpose" id="purpose"  name = is_approved['.$row["id"].']><option value = "PENDING">PENDING</option><option value = "APPROVED">APPROVED</option><option value = "REJECT">REJECT</OPTION></select></td>';
 
-            echo  '</td><td id="business2" style="display:none;"><br><textarea sstyle="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" placeholder="Optional..." name = reasonHr['.$row["id"].'] type = text></textarea></td></tr>';
-
-            
-              
+            echo  '<td style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;display:none;" id="business4" ><br><textarea style="width:150px;" placeholder="Optional..." name = reasonHr['.$row["id"].'] type = text></textarea></td></tr>';
+				      
              ;
 
         }
-        echo "</table>";
-      }
-      else{
-        echo "0 result";
-      }
+				echo "</table>";
+			}
+			else{
+				echo "0 result";
+			}
 
-      }
+			}
 
-      if($_SESSION['type'] == 'deptHead'){
-        $conn = mysqli_connect("localhost", "root", 'str0ngpa$$w0rd', "registration");
-      if ($conn-> connect_error) {
-        die("Connection Failed:".$conn->connect_error);
-      }
-      $employee_Number = $_SESSION['employee_N'];
-            $user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
-              $price = mysqli_query($db,$user);
-              $result = mysqli_fetch_assoc($price);
+			if($_SESSION['type'] == 'deptHead'){
+				$conn = mysqli_connect("localhost", "root", 'str0ngpa$$w0rd', "registration");
+			if ($conn-> connect_error) {
+				die("Connection Failed:".$conn->connect_error);
+			}
+			$employee_Number = $_SESSION['employee_N'];
+      			$user = "SELECT department FROM user WHERE employeeNum = '$employee_Number'";
+      				$price = mysqli_query($db,$user);
+      				$result = mysqli_fetch_assoc($price);
 
-              $_SESSION['department'] = $result['department'];
-              $test = $_SESSION['department'];
+      				$_SESSION['department'] = $result['department'];
+      				$test = $_SESSION['department'];
 
-      $sql = "SELECT * FROM form WHERE dept_approved='PENDING' AND request_type='NO-OUT' AND department = '$test'";
-      $result1 = $conn-> query($sql);
+			$sql = "SELECT * FROM form WHERE dept_approved='PENDING' AND request_type='LEAVE APPLICATION' AND department = '$test'";
+			$result1 = $conn-> query($sql);
  
 if(isset($_POST['update']))
 {
-            $email = $_POST['email'];
+    $email = $_POST['email'];
       $reasonDept = $_POST['reasonDept'];
       $approve = $_POST['deptApproved'];
       $deptDateUpdate =$_POST['deptDateUpdate'];
@@ -226,12 +228,10 @@ if(isset($_POST['update']))
 $query = "UPDATE `form` SET `is_approved`='".$approve."',`reasonDept`='".$reasonDept."',`deptDateUpdate`='".$deptDateUpdate."'  WHERE `id` = $id LIMIT 1";  
 
 
-
-   
    
    $result = mysqli_query($conn, $query);
-
-      if($approve == 'APPROVED'){
+   
+    if($approve == 'APPROVED'){
                     $mail = new PHPMailer\PHPMailer\PHPMailer();  
                     $mail->SMTPDebug = 0;                                 // Enable verbose debug output
                     $mail->isSMTP();                                      // Set mailer to use SMTP
@@ -241,13 +241,13 @@ $query = "UPDATE `form` SET `is_approved`='".$approve."',`reasonDept`='".$reason
                     $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
                     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                     $mail->Port = 587;                                    // TCP port 
-                    $mail->setFrom('localhost.roycehotel@gmail.com', 'No-Out Form Approved Department Head');
+                    $mail->setFrom('localhost.roycehotel@gmail.com', 'Leave Form Approved');
                     $mail->addAddress($email);     // 
 
     //Content
                     $mail->isHTML(true);                                  // Set email format to HTML
-                    $mail->Subject = 'No-Out Form Update Department Head';
-                    $mail->Body    = 'Form Accepted. Form was forwarded to HR Manager';
+                    $mail->Subject = 'Leave Form Update Department Head';
+                    $mail->Body    = 'Form Accepted.';
 
                     $mail->send();
             }
@@ -262,59 +262,61 @@ $query = "UPDATE `form` SET `is_approved`='".$approve."',`reasonDept`='".$reason
                     $mail->Password = 'str0ngpa$$w0rd';                           // SMTP password
                     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                     $mail->Port = 587;                                    // TCP port 
-                    $mail->setFrom('localhost.roycehotel@gmail.com', 'No-Out Form Rejected');
+                    $mail->setFrom('localhost.roycehotel@gmail.com', 'Leave Form Rejected');
                     $mail->addAddress($email);     // 
 
     //Content
                     $mail->isHTML(true);                                  // Set email format to HTML
-                    $mail->Subject = 'No-Out Form Update Department Head';
+                    $mail->Subject = 'Leave Form Update Department Head';
                     $mail->Body    = "Form Rejected <br> Reason: ".$reasonDept.".";
 
                     $mail->send();
             }
-
       }
 }
 
-      if ($result1-> num_rows > 0) {
-        while ($row = $result1-> fetch_assoc()){
-          echo '<tr><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
+			if ($result1-> num_rows > 0) {
+				while ($row = $result1-> fetch_assoc()){
+					 echo '<tr><input type = hidden  name = id['.$row["id"].'] type = text readonly = readonly value ="'.$row["id"].'"></input>';
           echo '<input type = hidden  name = email['.$row["id"].'] type = text readonly = readonly value ="'.$row["email"].'"></input>';
 
-          echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["employeeNum"].'';
+          echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br>'.$row["employeeNum"].'';
 
-            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.$row["fullname"].'';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br>'.$row["fullname"].'';
 
-            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["dateFiled"])).'';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br>'.date("M d, Y , l",strtotime($row["dateFiled"])).'';
 
 
-            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>'.date("M d, Y , l",strtotime($row["planDate"])).'';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;">From: <br>'.date("M d, Y , l",strtotime($row["leaveStart"])).'<br>To: <br>'.date("M d, Y , l",strtotime($row["leaveEnd"])).'';
 
-            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;">From: <br>'.date("g:i a", strtotime($row["startOfShift"])).'<br>To: <br>'. date("g:i a", strtotime($row["endOfShift"])).'</td>';
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;">From: <br>'.date("g:i a", strtotime($row["startOfShift"])).'<br>To: <br>'. date("g:i a", strtotime($row["endOfShift"])).'</td>';
 
-            echo '<input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" hidden required name="hrDateUpdate" type="date" value='.date("Y-m-d").'></input>';
+              echo '<input style="text-align:center;border: 1px solid #bb9121; color: #bb9121;background-color:#fffacd;" hidden required name="hrDateUpdate" type="date" value='.date("Y-m-d").'></input>';
+            
 
-            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;"><br>
-            '. date("g:i a", strtotime($row["no_out"])).'</td>';
+            echo  '<td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br>'.$row["leaveType"].'</td>';
 
-            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><textarea style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" name = reason['.$row["id"].'] type = text readonly = readonly >'. $row["reason"].'</textarea>';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br>'. $row["leavePay"].'';
+            echo '<td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br><textarea style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" readonly type = text>'.$row["reason"].'</textarea></td>';
 
-            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;"><br>
-            <select style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" class="purpose" id="purpose"  name = deptApproved['.$row["id"].']><option value = "PENDING">PENDING</option><option value = "APPROVED">APPROVED</option><option value = "REJECT">REJECT</OPTION></select></td>';
+            echo '</td><td style="border: 1px solid #bb9121; color: #bb9121;style=background-color:#fffacd;"><br>
+            <select style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" class="purpose" id="purpose"  name = dept_approved['.$row["id"].']><option value = "PENDING">PENDING</option><option value = "APPROVED">APPROVED</option><option value = "REJECT">REJECT</OPTION></select></td>';
 
-            echo  '</td><td style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" id="business2" style="display:none;"><br><textarea style="height: 30px;width:150px;" placeholder="Optional..." name = reasonDept['.$row["id"].'] type = text></textarea></td></tr>';
-        }
-        echo "</table>";
-      }
-      else{
-        echo "0 result";
-      }
+            echo  '</td><td  id="business2" style="display:none;"><br><textarea style="background-color:#fffacd;border: 1px solid #bb9121; color: #bb9121;" placeholder="Optional..." name = reasonDept['.$row["id"].'] type = text></textarea></td></tr>';
+				}
+				echo "</table>";
+			}
+			else{
+				echo "0 result";
+			}
 
-      }
-      
-    ?>
+			}
+			
+		?>
 
-  </table>
+
+
+	</table>
 
 </div>
    <input type="submit" style="background-color:#fffacd;" class="btn btn-default" name="update" value="Update Data">
@@ -323,9 +325,9 @@ $query = "UPDATE `form` SET `is_approved`='".$approve."',`reasonDept`='".$reason
 </div>
 </div>
 <div>
-  <form>
-    <hr>
-  </form>
+	<form>
+		<hr>
+	</form>
 </div>
 
 </body>
